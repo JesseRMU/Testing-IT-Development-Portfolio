@@ -1,0 +1,80 @@
+
+.button {
+    border-radius: var(--radius-md);
+    padding: 4px 7pt 4px 7pt;
+    align-items: center;
+    font-weight: 500;
+}
+.button.selected {
+    background-color: #fdfdfc;
+    font-weight: bold;
+}
+.button:hover {
+    background-color: var(--color-gray-100);
+}
+.button.selected:hover {
+    background-color: #fdfdfc;
+}
+
+.widget-menu {
+    background-color: var(--color-gray-200);
+    background-image: url("../images/ellipsis-01.svg");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 28px;
+    width: 50px;
+    border-radius: var(--radius-md);
+    float: right;
+    overflow: visible;
+    cursor: pointer;
+}
+
+.widget-menu:hover, .widget-menu:focus {
+    background-color: var(--color-gray-100);
+}
+.widget-menu:active {
+    background-color: var(--color-gray-200);
+}
+.widget-menu:target {
+    background-color: var(--color-gray-200);
+}
+
+.widget-menu > ol {
+    margin-top: 28px;
+    background: #ededec;
+    border-radius: var(--radius-md);
+    border-color: var(--color-gray-200);
+    border-width: 1px;
+    width: fit-content;
+    z-index: 20;
+    position: relative;
+    float: right;
+    padding: 2pt;
+    flex-direction: column;
+    display: none;
+    gap: 2pt;
+    cursor: default;
+}
+
+.widget-menu:focus > ol, .widget-menu:focus-within > ol {
+    display: flex;
+}
+
+.widget-menu > ol > li {
+    width: 150px;
+    display: block;
+    background-color: #fdfdfd;
+    border-radius: var(--radius-md);
+    padding-left: 2pt;
+    cursor: pointer;
+    font-weight: 450;
+}
+
+.widget-menu > ol > li:hover {
+    background-color: var(--color-gray-100);
+}
+
+.widget-menu > ol > li:active {
+    background-color: var(--color-gray-200);
+}

@@ -1,3 +1,61 @@
+@font-face {
+    font-family: "RO Sans";
+    font-weight: normal;
+    font-style: normal;
+    src: url("../fonts/RO-SansWebText-Regular.woff2") format("woff2"), url("../fonts/RO-SansWebText-Regular.woff") format("woff")
+}
+
+@font-face {
+    font-family: "RO Sans";
+    font-weight: normal;
+    font-style: italic;
+    src: url("../fonts/RO-SansWebText-Italic.woff2") format("woff2"), url("../fonts/RO-SansWebText-Italic.woff") format("woff")
+}
+
+@font-face {
+    font-family: "RO Sans";
+    font-weight: bold;
+    font-style: normal;
+    src: url("../fonts/RO-SansWebText-Bold.woff2") format("woff2"), url("../fonts/RO-SansWebText-Bold.woff") format("woff")
+}
+
+@font-face {
+    font-family: "RO Serif";
+    font-weight: normal;
+    font-style: normal;
+    src: url("../fonts/RO-SerifWeb-Regular.woff2") format("woff2"), url("../fonts/RO-SerifWeb-Regular.woff") format("woff")
+}
+
+@font-face {
+    font-family: "RO Serif";
+    font-weight: normal;
+    font-style: italic;
+    src: url("../fonts/RO-SerifWeb-Italic.woff2") format("woff2"), url("../fonts/RO-SerifWeb-Italic.woff") format("woff")
+}
+
+@font-face {
+    font-family: "RijksSans";
+    font-style: normal;
+    font-weight: 200 800;
+    src: url("../fonts/rijks-sans-regular.woff2") format("woff2")
+}
+
+@font-face {
+    font-family: "RijksSans";
+    font-style: italic;
+    font-weight: 200 800;
+    src: url("../fonts/rijks-sans-italic.woff2") format("woff2")
+}
+
+:root {
+    --font-family: RO Sans, Calibri, Arial, Verdana, sans-serif;
+    --hemelblauw: #007bc7;
+    --achtergrond: #f3f4f6;
+}
+
+body {
+    font-family: RO Sans;
+}
 
 .button {
     border-radius: var(--radius-md);
@@ -5,13 +63,16 @@
     align-items: center;
     font-weight: 500;
 }
+
 .button.selected {
     background-color: #fdfdfc;
     font-weight: bold;
 }
+
 .button:hover {
     background-color: var(--color-gray-100);
 }
+
 .button.selected:hover {
     background-color: #fdfdfc;
 }
@@ -33,9 +94,11 @@
 .widget-menu:hover, .widget-menu:focus {
     background-color: var(--color-gray-100);
 }
+
 .widget-menu:active {
     background-color: var(--color-gray-200);
 }
+
 .widget-menu:target {
     background-color: var(--color-gray-200);
 }

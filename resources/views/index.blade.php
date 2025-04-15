@@ -15,7 +15,7 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] text-[#1b1b18]">
+    <body class="bg-[var(--achtergrond)] text-[#1b1b18]">
         <header class="w-full mb-6 flex gap-10 h-16 items-center border-b-1 border-b-gray-200">
             <div class="flex flex-initial font-semibold text-xl pl-5">Dashboard Ligplaatsbezetting</div>
             <div class="flex flex-initial">
@@ -42,10 +42,10 @@
             </div>
             <div class="flex flex-row gap-5 flex-wrap justify-center">
                 <x-widget title="Duur vs laadvermogen" bottomText="Dit is nu gewoon een plaatje uit excel">
-                    <img src="https://yt3.ggpht.com/aJP6QParX0G4bLcqeVD4y8rbjUWImXcDFswRbjmKFj7NQcKjsovLfxyf3Db0AuI9UoKlz3X_Ib9EgA=s0-rw-nd-v1" class="max-h-[560px] w-full" />
+                    <img src="images/Grafiek1.webp" class="max-h-[560px] w-full" />
                 </x-widget>
                 <x-widget title="Nog dezelfde grafiek" bottomText="Maar ander plaatje">
-                    <img src="https://yt3.ggpht.com/10jhI2qbWPZxdvcqapgwo07bVneD-ifKmRgDfpcnI7j3HAtFomWe4yAWZtos1iN7X_i233BrRlku=s0" class="max-h-[560px] w-full" />
+                    <img src="images/Grafiek2.png" class="max-h-[560px] w-full" />
                 </x-widget>
             </div>
         </main>

@@ -1,0 +1,11 @@
+<div class="rounded-2xl border-gray-200 border-1 p-5 {{ isset($small) ? "flex-auto" : "flex-initial max-w-[900px]"}}">
+    <div class="widget-menu" tabindex="0">
+        <ol>
+            <li tabindex="0">Optie</li>
+            <li tabindex="0">Optie 2</li>
+        </ol>
+    </div>
+    <h2 class="font-bold">{{ $title }}</h2>
+    {!! $slot !!}
+    @if(isset($bottomText))<p class="text-gray-500">{{ $bottomText }}</p>@endif
+</div>

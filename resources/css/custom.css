@@ -141,3 +141,7 @@ body {
 .widget-menu > ol > li:active {
     background-color: var(--color-gray-200);
 }
+
+form > input {
+    display: block;
+}

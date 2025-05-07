@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use ZipArchive;
 use XmlReader;
 use Illuminate\Support\Facades\Storage;
-use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\DB;
 
 
 class ExcelUpload extends Controller
 {
-    //
+    //zodat we dingen onthouden, en niet voor elke colom moeten gaan zoeken naar de objecten
+    private $objecten = [];
+
     public function upload(Request $request): string
     {
         $file = $request->file('spreadsheet');
@@ -109,7 +111,11 @@ class ExcelUpload extends Controller
             Storage::disk('local')->delete($path);
             $cols = $rows[1];
             unset($rows[1]); // dit is de rij met de namen van alle colommen, dit zou handiger niet in dezelfde lijst staan
-            dd($rows);
+            //dd($rows);
+            $count = 0;
+            foreach ($rows as $row) {
+                $this->putRowIntoDatabase($row);
+            }
 
         } else {
             //dit is geen zipbestand (en dus geen xlsx)
@@ -118,6 +124,80 @@ class ExcelUpload extends Controller
 
         return redirect(route("home"));
     }
+
+    private function findObjectId($object_naam) {
+        if(key_exists($object_naam, $this->objecten)) {
+            return $this->objecten[$object_naam];
+        } else {
+            foreach(DB::table("objecten")->get() as $object) {
+                $this->objecten[$object->object_naam] = $object->object_id;
+            }
+            if(key_exists($object_naam, $this->objecten)) {
+                return $this->objecten[$object_naam];
+            } else {
+                $id = DB::table("objecten")->insertGetId(['object_naam' => $object_naam]);
+                $this->objecten[$object_naam] = $id;
+                return $id;
+            }
+
+        }
+    }
+
+    private function putRowIntoDatabase($row)
+    {
+        if(is_null($row)){
+            return;
+        }
+        if(!is_array($row)){
+            dump("niet array");
+            //dd($row);
+            return;
+        }
+        if(!count($row) > 0){
+            dump("lege array");
+            //dd($row);
+            return;
+        }
+        if(DB::table("evenementen")->where("naam_ivs90_bestand", $row["Naam IVS90 bestand"])->where("regelnummer_in_bron", $row["regelnummer_in_bron"])->doesntExist()){
+            $object_id = $this->findObjectId($row['IO_NAAM'] ?? null);
+            if(DB::table("steigers")->where("object_id", $object_id)->where("steiger_code", $row['10.3 Steiger'] ?? null)->doesntExist()) {
+                $steiger_id = DB::table("steigers")->insertGetId([
+                    "object_id" => $object_id,
+                    "steiger_code" => $row['10.3 Steiger'] ?? null,
+                    "steiger_naam" => ""
+                ]);
+            } else {
+                $steiger_id = DB::table("steigers")->where("object_id", $object_id)->where("steiger_code", $row['10.3 Steiger'] ?? null)->first()->steiger_id;
+            }
+            $schip_id = DB::table("schepen")->insertGetId([
+                "vlag_code" => $row["16.1 Vlag CBS"] ?? null,
+                "schip_belading_type" => $row["28 Beladingscode"] ?? null,
+                "schip_naam" => "",
+                "schip_laadvermogen" => $row["18 Laadvermogen"] ?? null,
+                "lengte" => $row["22 Scheepslengte"] ?? null,
+                "breedte" => $row["23 Scheepsbreedte"] ?? null,
+                "diepgang" => $row["24 Diepgang"] ?? null,
+                "schip_onderdeel_code" => $row["27 Onderdeelcode"] ?? null
+            ]);
+            $begindatum = floatval($row["5, 6 Begindatum en -tijd"] ?? 0)*24*60*60 - 2209161600;
+            DB::table("evenementen")->insert([
+                "naam_ivs90_bestand" => $row["Naam IVS90 bestand"],
+                "regelnummer_in_bron" => $row["regelnummer_in_bron"],
+                "object_id" => $object_id,
+                "steiger_id" => $steiger_id,
+                "schip_id" => $schip_id,
+                "evenement_begin_datum" => $begindatum,
+                "evenement_eind_datum" => $begindatum+intval($row["7  Duur van evenement"] ?? 0)*60,
+                "evenement_vaarrichting" => $row["12 Vaarrichting"] ?? null
+            ]);
+
+        } else {
+            dump("bestaat al");
+            //dd($row);
+            return;
+        }
+    }
+
 
     private function parseColIndex($string): int
     {
@@ -136,7 +216,7 @@ class ExcelUpload extends Controller
             default => $value
         };
 
-        //    "5" => floatval($value)*24*60*60 - 2208988800, //data worden in excel opgeslagen als aantal dagen sinds 1900, maar wij willen seconden sinds 1970
+        //    "5" => floatval($value)*24*60*60 - 2209161600, //data worden in excel opgeslagen als aantal dagen sinds 1900, maar wij willen seconden sinds 1970
 
         return $value;
     }

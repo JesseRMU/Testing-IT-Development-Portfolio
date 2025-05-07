@@ -27,6 +27,7 @@
                     <a href="/" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "home") selected @endif">Data</a>
                     <a href="/filters" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "filters") selected @endif">Filters</a>
                     <a href="/upload" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "upload") selected @endif">Upload Data</a>
+                    <a href="/evenementen" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "evenementen.index") selected @endif">Overzicht evenementen (demo)</a>
                 </nav>
             </div>
             {!! $slot !!}

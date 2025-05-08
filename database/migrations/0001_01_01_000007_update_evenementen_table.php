@@ -15,7 +15,6 @@ return new class extends Migration
             $table->text('naam_ivs90_bestand');
             $table->integer('regelnummer_in_bron');
             //deze twee velden zijn samen uniek. (vgm)
-
         });
     }
 

@@ -145,3 +145,7 @@ body {
 form > input {
     display: block;
 }
+
+th {
+    text-align: left;
+}

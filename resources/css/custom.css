@@ -51,6 +51,13 @@
     --font-family: RO Sans, Calibri, Arial, Verdana, sans-serif;
     --hemelblauw: #007bc7;
     --achtergrond: #f3f4f6;
+    --grijs-1: #f3f3f3;
+    --grijs-2: #e6e6e6;
+    --grijs-3: #cccccc;
+    --grijs-4: #b4b4b4;
+    --grijs-5: #999999;
+    --grijs-6: #696969;
+    --grijs-7: #535353;
 }
 
 body {
@@ -149,3 +156,23 @@ form > input {
 th {
     text-align: left;
 }
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: var(--hemelblauw);
+    border-radius: 50%;
+    display: block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    }

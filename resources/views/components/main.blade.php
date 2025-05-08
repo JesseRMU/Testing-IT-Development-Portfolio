@@ -17,7 +17,7 @@
     </head>
     <body class="bg-[var(--achtergrond)] text-[#1b1b18]">
         <header class="w-full mb-6 flex gap-10 h-16 items-center border-b-1 border-b-gray-200">
-            <div class="flex flex-initial font-semibold text-xl pl-5">Dashboard Ligplaatsbezetting</div>
+            <div class="flex flex-initial font-semibold text-xl pl-5">Dashboard Ligplaatsbezetting IVS Next</div>
             <div class="flex flex-initial">
             </div>
         </header>
@@ -32,5 +32,8 @@
             </div>
             {!! $slot !!}
         </main>
+        <div style="display: none;" id="loader" class="flex justify-center items-center bg-[#7f7f7f7f] w-[100vw] h-[100vh] fixed left-0 top-0">
+            <span class="loader"></span>
+        </div>
     </body>
 </html>

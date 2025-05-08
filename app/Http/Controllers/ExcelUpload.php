@@ -86,18 +86,18 @@ class ExcelUpload extends Controller
                             $cellIndex = $this->parseColIndex(preg_replace('/[0-9]+/', '', $reader->getAttribute("r")));
                             break;
                         case "v":
+                            $value = $this->parseCellValue($reader->readString(), $strings, $cellType);
                             if ($rowNumber == 1) {
-                                $currentRow[$cellIndex] = $this->parseCellValue($reader->readString(), $strings, $cellType);
+                                $currentRow[$cellIndex] = $value;
                             } else {
-                                $currentRow[$rows[1][$cellIndex]] = $this->parseCellValue($reader->readString(), $strings, $cellType);
+                                $currentRow[$rows[1][$cellIndex]] = $value;
                             }
-
-
                             break;
                         default:
                             break;
                     }
-                } else if ($reader->nodeType == XMLReader::END_ELEMENT && $reader->name == "sheetData") {
+                } elseif ($reader->nodeType == XMLReader::END_ELEMENT && $reader->name == "sheetData") {
+                    // we zouden in theorie hier kunnen aborten - sheetData is ten einde
                 }
             }
 
@@ -106,7 +106,8 @@ class ExcelUpload extends Controller
             Storage::disk('local')->deleteDirectory("temp/" . $id);
             Storage::disk('local')->delete($path);
             $cols = $rows[1];
-            unset($rows[1]); // dit is de rij met de namen van alle colommen, dit zou handiger niet in dezelfde lijst staan
+            // dit is de rij met de namen van alle colommen, dit zou handiger niet in dezelfde lijst staan
+            unset($rows[1]);
             $count = 0;
             foreach ($rows as $row) {
                 $this->putRowIntoDatabase($row);
@@ -158,16 +159,25 @@ class ExcelUpload extends Controller
             dump("lege array");
             return;
         }
-        if (DB::table("evenementen")->where("naam_ivs90_bestand", $row["Naam IVS90 bestand"])->where("regelnummer_in_bron", $row["regelnummer_in_bron"])->doesntExist()) {
+        if (DB::table("evenementen")->
+                where("naam_ivs90_bestand", $row["Naam IVS90 bestand"])->
+                where("regelnummer_in_bron", $row["regelnummer_in_bron"])->
+                doesntExist()) {
             $object_id = $this->findObjectId($row['IO_NAAM'] ?? null);
-            if (DB::table("steigers")->where("object_id", $object_id)->where("steiger_code", $row['10.3 Steiger'] ?? null)->doesntExist()) {
+            if (DB::table("steigers")->
+                    where("object_id", $object_id)->
+                    where("steiger_code", $row['10.3 Steiger'] ?? null)->
+                    doesntExist()) {
                 $steiger_id = DB::table("steigers")->insertGetId([
                     "object_id" => $object_id,
                     "steiger_code" => $row['10.3 Steiger'] ?? null,
                     "steiger_naam" => ""
                 ]);
             } else {
-                $steiger_id = DB::table("steigers")->where("object_id", $object_id)->where("steiger_code", $row['10.3 Steiger'] ?? null)->first()->steiger_id;
+                $steiger_id = DB::table("steigers")->
+                    where("object_id", $object_id)->
+                    where("steiger_code", $row['10.3 Steiger'] ?? null)->
+                    first()->steiger_id;
             }
             $schip_id = DB::table("schepen")->insertGetId([
                 "vlag_code" => $row["16.1 Vlag CBS"] ?? null,

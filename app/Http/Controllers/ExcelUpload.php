@@ -29,13 +29,13 @@ class ExcelUpload extends Controller
         $path = $file->store('uploads');
         $zip = new ZipArchive();
         $zipFile = $zip->open(Storage::disk('local')->path($path));
-        if ($zipFile === TRUE) {
+        if ($zipFile === true) {
             $zip->extractTo(Storage::disk('local')->path("temp/" . $id));
             $zip->close();
             $stringReader = XmlReader::open(Storage::disk('local')->path("temp/" . $id . "/xl/sharedStrings.xml"));
             $strings = [];
             $index = -1;
-            while ($stringReader->read() !== FALSE) {
+            while ($stringReader->read() !== false) {
                 if ($stringReader->nodeType == XMLReader::ELEMENT) {
                     switch ($stringReader->name) {
                         case "sst":
@@ -48,11 +48,11 @@ class ExcelUpload extends Controller
                             if ($index !== -1) {
                                 $strings[$index] = $stringReader->readString();
                             }
+                            break;
                         default:
                             break;
                     }
                 }
-
             }
             $stringReader->close();
 
@@ -63,7 +63,7 @@ class ExcelUpload extends Controller
             $cellType = null;
             //$cellStyle = null;
             $cellIndex = -1;
-            while ($reader->read() !== FALSE) {
+            while ($reader->read() !== false) {
                 if ($reader->nodeType == XMLReader::ELEMENT) {
                     switch ($reader->name) {
                         case "worksheet":
@@ -111,7 +111,6 @@ class ExcelUpload extends Controller
             foreach ($rows as $row) {
                 $this->putRowIntoDatabase($row);
             }
-
         } else {
             //dit is geen zipbestand (en dus geen xlsx)
             return "DIT IS GEEN GOED BESTAND";
@@ -120,6 +119,10 @@ class ExcelUpload extends Controller
         return redirect(route("home"));
     }
 
+    /**
+     * @param $object_naam
+     * @return int
+     */
     private function findObjectId($object_naam)
     {
         if (key_exists($object_naam, $this->objecten)) {
@@ -135,10 +138,13 @@ class ExcelUpload extends Controller
                 $this->objecten[$object_naam] = $id;
                 return $id;
             }
-
         }
     }
 
+    /**
+     * @param $row
+     * @return void
+     */
     private function putRowIntoDatabase($row)
     {
         if (is_null($row)) {
@@ -184,7 +190,6 @@ class ExcelUpload extends Controller
                 "evenement_eind_datum" => $begindatum + intval($row["7  Duur van evenement"] ?? 0) * 60,
                 "evenement_vaarrichting" => $row["12 Vaarrichting"] ?? null
             ]);
-
         } else {
             dump("bestaat al");
             return;
@@ -192,6 +197,10 @@ class ExcelUpload extends Controller
     }
 
 
+    /**
+     * @param $string
+     * @return int
+     */
     private function parseColIndex($string): int
     {
         $num = -1;
@@ -203,6 +212,12 @@ class ExcelUpload extends Controller
         return $num;
     }
 
+    /**
+     * @param $value
+     * @param $strings
+     * @param $cellType
+     * @return mixed
+     */
     private function parseCellValue($value, $strings, $cellType)
     {
         $value = match ($cellType) {

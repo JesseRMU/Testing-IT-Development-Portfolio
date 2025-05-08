@@ -152,11 +152,11 @@ class ExcelUpload extends Controller
             return;
         }
         if (!is_array($row)) {
-            dump("niet array");
+            //dump("niet array");
             return;
         }
         if (!count($row) > 0) {
-            dump("lege array");
+            //dump("lege array");
             return;
         }
         if (DB::table("evenementen")->
@@ -201,7 +201,7 @@ class ExcelUpload extends Controller
                 "evenement_vaarrichting" => $row["12 Vaarrichting"] ?? null
             ]);
         } else {
-            dump("bestaat al");
+            //dump("bestaat al");
             return;
         }
     }

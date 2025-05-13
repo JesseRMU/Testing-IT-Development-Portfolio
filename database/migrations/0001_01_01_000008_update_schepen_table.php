@@ -58,6 +58,11 @@ return new class extends Migration
             $table->dropColumn('schip_vervoerd_gewicht');
             $table->dropColumn('schip_aantal_passagiers');
             $table->dropColumn('schip_avv_klasse');
+
+            $table->dropColumn('schip_containers');
+            $table->dropColumn('schip_containers_aantal');
+            $table->dropColumn('schip_containers_type');
+            $table->dropColumn('schip_containers_teus');
         });
     }
 };

@@ -18,7 +18,7 @@
                     {{ $evenement->evenement_id }}
                 </td>
                 <td>
-                    {{ $evenement->evenement_begin_datum }}
+                    {{ date("Y-m-d H:i:s", $evenement->evenement_begin_datum) }}
                 </td>
                 <td>
                     {{ ( $evenement->evenement_eind_datum - $evenement->evenement_begin_datum ) / 60 }}

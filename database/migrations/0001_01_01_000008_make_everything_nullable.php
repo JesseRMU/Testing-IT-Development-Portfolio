@@ -21,6 +21,9 @@ return new class extends Migration
             $table->integer('diepgang')->nullable()->change();
             $table->string('schip_onderdeel_code')->nullable()->change();
         });
+        Schema::table('steigers', function (Blueprint $table) {
+            $table->string('steiger_naam')->nullable()->change();
+        });
     }
 
     /**

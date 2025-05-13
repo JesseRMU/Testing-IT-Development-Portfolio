@@ -5,11 +5,11 @@
             <th>begindatum</th>
             <th>duur</th>
             <th>vlag</th>
-            <th>schip - beladingstype</th>
+            <th>schip - beladingscode</th>
             <th>schip - lengte</th>
             <th>schip - breedte</th>
             <th>schip - diepgang</th>
-            <th>object (naam)</th>
+            <th>wachthaven (naam)</th>
             <th>steiger (code)</th>
         </tr>
         @foreach($evenementen as $evenement)
@@ -27,7 +27,7 @@
                     {{ $evenement->schip->vlag_code }}
                 </td>
                 <td>
-                    {{ $evenement->schip->schip_belading_type }}
+                    {{ $evenement->schip->schip_beladingscode }}
                 </td>
                 <td>
                     {{ $evenement->schip->lengte }}
@@ -39,7 +39,7 @@
                     {{ $evenement->schip->diepgang }}
                 </td>
                 <td>
-                    {{ $evenement->object->object_naam }}
+                    {{ $evenement->wachthaven->wachthaven_naam }}
                 </td>
                 <td>
                     {{ $evenement->steiger->steiger_code }}

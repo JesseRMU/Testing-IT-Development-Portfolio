@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('naam_ivs90_bestand');
             $table->integer('regelnummer_in_bron');
             //deze twee velden zijn samen uniek. (vgm)
+            $table->datetime('datum_inlezen')->nullable();
         });
     }
 
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('evenementen', function (Blueprint $table) {
             $table->dropColumn('naam_ivs90_bestand');
             $table->dropColumn('regelnummer_in_bron');
+            $table->dropColumn('datum_inlezen');
         });
     }
 };

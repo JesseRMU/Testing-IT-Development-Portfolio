@@ -1,4 +1,4 @@
-gi<?php
+<?php
 
 namespace Database\Factories;
 

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('steigers', function (Blueprint $table) {
             $table->id('steiger_id');
-            $table->foreignId('object_id');
+            $table->foreignId('wachthaven_id');
             $table->string('steiger_code');
             $table->string('steiger_naam');
 
-            $table->foreign('object_id')->references('object_id')->on('objecten');
+            $table->foreign('wachthaven_id')->references('wachthaven_id')->on('wachthavens');
         });
     }
 

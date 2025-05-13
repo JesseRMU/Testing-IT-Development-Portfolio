@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class ExcelUpload extends Controller
 {
-    //zodat we dingen onthouden, en niet voor elke colom moeten gaan zoeken naar de objecten
-    private $objecten = [];
+    //zodat we dingen onthouden, en niet voor elke colom moeten gaan zoeken naar de wachthavens
+    private $wachthavens = [];
 
     /**
      * @param Request $request
@@ -121,22 +121,22 @@ class ExcelUpload extends Controller
     }
 
     /**
-     * @param $object_naam
+     * @param $wachthaven_naam
      * @return int
      */
-    private function findObjectId($object_naam)
+    private function findWachthavenId($wachthaven_naam)
     {
-        if (key_exists($object_naam, $this->objecten)) {
-            return $this->objecten[$object_naam];
+        if (key_exists($wachthaven_naam, $this->wachthavens)) {
+            return $this->wachthavens[$wachthaven_naam];
         } else {
-            foreach (DB::table("objecten")->get() as $object) {
-                $this->objecten[$object->object_naam] = $object->object_id;
+            foreach (DB::table("wachthavens")->get() as $wachthaven) {
+                $this->wachthavens[$wachthaven->wachthaven_naam] = $wachthaven->wachthaven_id;
             }
-            if (key_exists($object_naam, $this->objecten)) {
-                return $this->objecten[$object_naam];
+            if (key_exists($wachthaven_naam, $this->wachthavens)) {
+                return $this->wachthavens[$wachthaven_naam];
             } else {
-                $id = DB::table("objecten")->insertGetId(['object_naam' => $object_naam]);
-                $this->objecten[$object_naam] = $id;
+                $id = DB::table("wachthavens")->insertGetId(['wachthaven_naam' => $wachthaven_naam]);
+                $this->wachthavens[$wachthaven_naam] = $id;
                 return $id;
             }
         }
@@ -163,37 +163,54 @@ class ExcelUpload extends Controller
                 where("naam_ivs90_bestand", $row["Naam IVS90 bestand"])->
                 where("regelnummer_in_bron", $row["regelnummer_in_bron"])->
                 doesntExist()) {
-            $object_id = $this->findObjectId($row['IO_NAAM'] ?? null);
+            $wachthaven_id = $this->findWachthavenId($row['IO_NAAM'] ?? null);
             if (DB::table("steigers")->
-                    where("object_id", $object_id)->
+                    where("wachthaven_id", $wachthaven_id)->
                     where("steiger_code", $row['10.3 Steiger'] ?? null)->
                     doesntExist()) {
                 $steiger_id = DB::table("steigers")->insertGetId([
-                    "object_id" => $object_id,
-                    "steiger_code" => $row['10.3 Steiger'] ?? null,
-                    "steiger_naam" => ""
+                    "wachthaven_id" => $wachthaven_id,
+                    "steiger_code" => $row['10.3 Steiger'] ?? null
                 ]);
             } else {
                 $steiger_id = DB::table("steigers")->
-                    where("object_id", $object_id)->
+                    where("wachthaven_id", $wachthaven_id)->
                     where("steiger_code", $row['10.3 Steiger'] ?? null)->
                     first()->steiger_id;
             }
             $schip_id = DB::table("schepen")->insertGetId([
                 "vlag_code" => $row["16.1 Vlag CBS"] ?? null,
-                "schip_belading_type" => $row["28 Beladingscode"] ?? null,
-                "schip_naam" => "",
+                "schip_beladingscode" => $row["28 Beladingscode"] ?? null,
                 "schip_laadvermogen" => $row["18 Laadvermogen"] ?? null,
                 "lengte" => $row["22 Scheepslengte"] ?? null,
                 "breedte" => $row["23 Scheepsbreedte"] ?? null,
                 "diepgang" => $row["24 Diepgang"] ?? null,
-                "schip_onderdeel_code" => $row["27 Onderdeelcode"] ?? null
+                "schip_onderdeel_code" => $row["27 Onderdeelcode"] ?? null,
+                "schip_lading_system_code" => $row["32.1 Lading System-code"] ?? null,
+                "schip_lading_nstr" => $row["32.2 Lading (NSTR)"] ?? null,
+                "schip_lading_reserve" => $row["32.3 Lading (reserve)"] ?? null,
+                "schip_lading_vn_nummer" => $row["34 Lading VN-nummer"] ?? null,
+                "schip_lading_klasse" => $row["35.1 Lading (Klasse)"] ?? null,
+                "schip_lading_code" => $row["35.2 Lading (Code)"] ?? null,
+                "schip_lading_1e_etiket" => $row["35.3 Lading (1e Etiket)"] ?? null,
+                "schip_lading_2e_etiket" => $row["35.4 Lading (2e Etiket)"] ?? null,
+                "schip_lading_3e_etiket" => $row["35.5 Lading (3e Etiket)"] ?? null,
+                "schip_lading_verpakkingsgroep" => $row["35.6 Lading (verpakkingsgroep)"] ?? null,
+                "schip_lading_marpol" => $row["36.1 Lading MARPOL"] ?? null,
+                "schip_lading_seinvoering_kegel" => $row["37 Seinvoering (Kegel)"] ?? null,
+                "schip_vervoerd_gewicht" => $row["38 Vervoerd gewicht"] ?? null,
+                "schip_aantal_passagiers" => $row["39 Aantal passagiers"] ?? null,
+                "schip_avv_klasse" => $row["AVV(laadvermogen)-klasse"] ?? null,
+                "schip_containers" => $row["30.1 Containers"] ?? null,
+                "schip_containers_aantal" => $row["30.2 Containers Aantal"] ?? null,
+                "schip_containers_type" => $row["30.3 Containers Type"] ?? null,
+                "schip_containers_teus" => $row["30.4 Containers TEUS"] ?? null
             ]);
             $begindatum = floatval($row["5, 6 Begindatum en -tijd"] ?? 0) * 24 * 60 * 60 - 2209161600;
             DB::table("evenementen")->insert([
                 "naam_ivs90_bestand" => $row["Naam IVS90 bestand"],
                 "regelnummer_in_bron" => $row["regelnummer_in_bron"],
-                "object_id" => $object_id,
+                "wachthaven_id" => $wachthaven_id,
                 "steiger_id" => $steiger_id,
                 "schip_id" => $schip_id,
                 "evenement_begin_datum" => $begindatum,

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wachthaven extends Model
 {
-    /** @use HasFactory<\Database\Factories\ObjectFactory> */
+    /** @use HasFactory<\Database\Factories\WachthavenFactory> */
     use HasFactory;
 
-    protected $table = 'objecten';
+    protected $table = 'wachthavens';
 }

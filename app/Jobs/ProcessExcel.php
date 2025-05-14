@@ -130,10 +130,11 @@ class ProcessExcel implements ShouldQueue
             unset($rows[1]);
             $count = 0;
             //DB::beginTransaction();
+            $batch_size = intval(env('DB_BATCH_SIZE', "1000"));
             foreach ($rows as $row) {
                 $this->putRowIntoDatabase($row);
                 $count++;
-                if($count >= 500){
+                if($count >= $batch_size){
                     DB::table("evenementen")->insert($this->parsedEvenementen);
                     $this->parsedEvenementen = [];
                     $count = 0;

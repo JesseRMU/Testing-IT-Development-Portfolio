@@ -37,6 +37,7 @@ class ExcelUpload extends Controller
 
     public function uploadPagina(Request $request)
     {
-        return view("upload");
+        $bezig = DB::table('jobs')->where('payload', 'LIKE', '%ProcessExcel%')->exists();
+        return view("upload", ['bezig' => $bezig]);
     }
 }

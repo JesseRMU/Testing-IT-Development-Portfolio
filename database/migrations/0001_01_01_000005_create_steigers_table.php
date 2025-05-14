@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('steiger_id');
             $table->foreignId('wachthaven_id');
             $table->string('steiger_code');
-            $table->string('steiger_naam');
+            $table->string('steiger_naam')->nullable();
 
             $table->foreign('wachthaven_id')->references('wachthaven_id')->on('wachthavens');
         });

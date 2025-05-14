@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessExcel;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use ZipArchive;
@@ -35,6 +38,10 @@ class ExcelUpload extends Controller
         return redirect(route("home"));
     }
 
+    /**
+     * @param Request $request
+     * @return View
+     */
     public function uploadPagina(Request $request)
     {
         $bezig = DB::table('jobs')->where('payload', 'LIKE', '%ProcessExcel%')->exists();

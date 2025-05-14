@@ -48,7 +48,8 @@ class ProcessExcel implements ShouldQueue
         if ($zipFile === true) {
             $zip->extractTo(Storage::disk('local')->path("temp/" . $this->id));
             $zip->close();
-            $stringReader = XmlReader::open(Storage::disk('local')->path("temp/" . $this->id . "/xl/sharedStrings.xml"));
+            $stringReader = XmlReader::open(Storage::disk('local')
+                ->path("temp/" . $this->id . "/xl/sharedStrings.xml"));
             $strings = [];
             $index = -1;
             while ($stringReader->read() !== false) {
@@ -134,7 +135,7 @@ class ProcessExcel implements ShouldQueue
             foreach ($rows as $row) {
                 $this->putRowIntoDatabase($row);
                 $count++;
-                if($count >= $batch_size){
+                if ($count >= $batch_size) {
                     DB::table("evenementen")->insert($this->parsedEvenementen);
                     $this->parsedEvenementen = [];
                     $count = 0;
@@ -170,11 +171,17 @@ class ProcessExcel implements ShouldQueue
         }
     }
 
-    private function findSteigerId($wachthaven_id, $steiger_code): int {
-        if(!isset($this->steigers[$wachthaven_id])){
+    /**
+     * @param $wachthaven_id
+     * @param $steiger_code
+     * @return int
+     */
+    private function findSteigerId($wachthaven_id, $steiger_code): int
+    {
+        if (!isset($this->steigers[$wachthaven_id])) {
             $this->steigers[$wachthaven_id] = [];
         }
-        if(isset($this->steigers[$wachthaven_id][$steiger_code])){
+        if (isset($this->steigers[$wachthaven_id][$steiger_code])) {
             return $this->steigers[$wachthaven_id][$steiger_code];
         } else {
             $steiger_id = DB::table("steigers")->insertGetId([
@@ -259,7 +266,7 @@ class ProcessExcel implements ShouldQueue
      */
     private function parseColIndex($string): int
     {
-        if(isset($this->colIndexes[$string])) {
+        if (isset($this->colIndexes[$string])) {
             return $this->colIndexes[$string];
         }
         $num = -1;

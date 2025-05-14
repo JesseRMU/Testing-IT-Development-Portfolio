@@ -20,7 +20,7 @@ return new class extends Migration
             $table->datetime('evenement_eind_datum')->nullable();
             $table->string('evenement_vaarrichting')->nullable();
 
-            $table->foreign('schip_id')->references('schip_id')->on('schepen');
+            //$table->foreign('schip_id')->references('schip_id')->on('schepen');
             $table->foreign('wachthaven_id')->references('wachthaven_id')->on('wachthavens');
             $table->foreign('steiger_id')->references('steiger_id')->on('steigers');
         });

@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('schepen', function (Blueprint $table) {
-            $table->renameColumn('schip_belading_type', 'schip_beladingscode');
+        Schema::table('evenementen', function (Blueprint $table) {
+            $table->string('schip_id')->nullable()->change();
+            $table->string('vlag_code')->nullable();
+            //$table->string('schip_naam');
+            $table->integer('schip_laadvermogen')->unsigned()->nullable();
+            $table->integer('lengte')->unsigned()->nullable();
+            $table->integer('breedte')->unsigned()->nullable();
+            $table->integer('diepgang')->unsigned()->nullable();
+            $table->string('schip_onderdeel_code')->nullable();;
+            $table->integer( 'schip_beladingscode')->unsigned()->nullable();
             $table->integer('schip_lading_system_code')->unsigned()->nullable();
             $table->integer('schip_lading_nstr')->unsigned()->nullable();
             $table->integer('schip_lading_reserve')->unsigned()->nullable();
@@ -33,6 +41,9 @@ return new class extends Migration
             $table->integer('schip_containers_aantal')->unsigned()->nullable();
             $table->integer('schip_containers_type')->unsigned()->nullable();
             $table->integer('schip_containers_teus')->unsigned()->nullable();
+
+            //$table->dropForeign('schip_id');
+
         });
     }
 
@@ -41,8 +52,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('schepen', function (Blueprint $table) {
-            $table->renameColumn('schip_beladingscode', 'schip_belading_type');
+        Schema::table('evenementen', function (Blueprint $table) {
+            $table->drip('schip_belading_type');
             $table->dropColumn('schip_lading_system_code');
             $table->dropColumn('schip_lading_nstr');
             $table->dropColumn('schip_lading_reserve');
@@ -63,6 +74,7 @@ return new class extends Migration
             $table->dropColumn('schip_containers_aantal');
             $table->dropColumn('schip_containers_type');
             $table->dropColumn('schip_containers_teus');
+            //$table->foreign('schip_id')->references('schip_id')->on('schepen');
         });
     }
 };

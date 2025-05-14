@@ -12,7 +12,8 @@
         document.getElementById("upload_button").addEventListener("click", e=>{
             const loader =  document.getElementById("loader");
             loader.style.display = "flex";
-            const omschrijving = document.createElement("bestand wordt geüpload");
+            const omschrijving = document.createElement("p");
+            omschrijving.innerHTML= "bestand wordt geüpload";
             loader.appendChild(omschrijving);
 
             document.getElementById("upload_form").submit();

@@ -20,7 +20,7 @@ class ProcessExcel implements ShouldQueue
     private $steigers = [];
     private $colIndexes = [];
 
-    //private $parsedSchepen = [];
+    private $parsedEvenementen = [];
     /**
      * Create a new job instance.
      */
@@ -132,7 +132,14 @@ class ProcessExcel implements ShouldQueue
             //DB::beginTransaction();
             foreach ($rows as $row) {
                 $this->putRowIntoDatabase($row);
+                $count++;
+                if($count >= 500){
+                    DB::table("evenementen")->insert($this->parsedEvenementen);
+                    $this->parsedEvenementen = [];
+                    $count = 0;
+                }
             }
+            DB::table("evenementen")->insert($this->parsedEvenementen);
             //DB::commit();
         } else {
             //dit is geen zipbestand (en dus geen xlsx)
@@ -201,7 +208,16 @@ class ProcessExcel implements ShouldQueue
                 doesntExist()) {
             $wachthaven_id = $this->findWachthavenId($row['IO_NAAM'] ?? null);
             $steiger_id = $this->findSteigerId($wachthaven_id, $row['10.3 Steiger']);
-            $schip_id = DB::table("schepen")->insertGetId([
+            //$schip_id = DB::table("schepen")->insertGetId([]);
+            $begindatum = floatval($row["5, 6 Begindatum en -tijd"] ?? 0) * 24 * 60 * 60 - 2209161600;
+            $this->parsedEvenementen[] = [
+                "naam_ivs90_bestand" => $row["Naam IVS90 bestand"],
+                "regelnummer_in_bron" => $row["regelnummer_in_bron"],
+                "wachthaven_id" => $wachthaven_id,
+                "steiger_id" => $steiger_id,
+                "evenement_begin_datum" => $begindatum,
+                "evenement_eind_datum" => $begindatum + intval($row["7  Duur van evenement"] ?? 0) * 60,
+                "evenement_vaarrichting" => $row["12 Vaarrichting"] ?? null,
                 "vlag_code" => $row["16.1 Vlag CBS"] ?? null,
                 "schip_beladingscode" => $row["28 Beladingscode"] ?? null,
                 "schip_laadvermogen" => $row["18 Laadvermogen"] ?? null,
@@ -228,18 +244,7 @@ class ProcessExcel implements ShouldQueue
                 "schip_containers_aantal" => $row["30.2 Containers Aantal"] ?? null,
                 "schip_containers_type" => $row["30.3 Containers Type"] ?? null,
                 "schip_containers_teus" => $row["30.4 Containers TEUS"] ?? null
-            ]);
-            $begindatum = floatval($row["5, 6 Begindatum en -tijd"] ?? 0) * 24 * 60 * 60 - 2209161600;
-            DB::table("evenementen")->insert([
-                "naam_ivs90_bestand" => $row["Naam IVS90 bestand"],
-                "regelnummer_in_bron" => $row["regelnummer_in_bron"],
-                "wachthaven_id" => $wachthaven_id,
-                "steiger_id" => $steiger_id,
-                "schip_id" => $schip_id,
-                "evenement_begin_datum" => $begindatum,
-                "evenement_eind_datum" => $begindatum + intval($row["7  Duur van evenement"] ?? 0) * 60,
-                "evenement_vaarrichting" => $row["12 Vaarrichting"] ?? null
-            ]);
+            ];
         } else {
             //dump("bestaat al");
             return;

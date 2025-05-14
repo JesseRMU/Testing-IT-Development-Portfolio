@@ -25,19 +25,19 @@
                     {{ ( $evenement->evenement_eind_datum - $evenement->evenement_begin_datum ) / 60 }}
                 </td>
                 <td>
-                    {{ $evenement->schip->vlag_code }}
+                    {{ $evenement->vlag_code }}
                 </td>
                 <td>
-                    {{ $evenement->schip->schip_beladingscode }}
+                    {{ $evenement->schip_beladingscode }}
                 </td>
                 <td>
-                    {{ $evenement->schip->lengte }}
+                    {{ $evenement->lengte }}
                 </td>
                 <td>
-                    {{ $evenement->schip->breedte }}
+                    {{ $evenement->breedte }}
                 </td>
                 <td>
-                    {{ $evenement->schip->diepgang }}
+                    {{ $evenement->diepgang }}
                 </td>
                 <td>
                     {{ $evenement->wachthaven->wachthaven_naam }}

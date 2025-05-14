@@ -18,8 +18,9 @@ class ProcessExcel implements ShouldQueue
     //zodat we dingen onthouden, en niet voor elke colom moeten gaan zoeken naar de wachthavens,steigers
     private $wachthavens = [];
     private $steigers = [];
+    private $colIndexes = [];
 
-    private $parsedSchepen = [];
+    //private $parsedSchepen = [];
     /**
      * Create a new job instance.
      */
@@ -252,12 +253,16 @@ class ProcessExcel implements ShouldQueue
      */
     private function parseColIndex($string): int
     {
+        if(isset($this->colIndexes[$string])) {
+            return $this->colIndexes[$string];
+        }
         $num = -1;
         $mul = 1;
         foreach (str_split(strrev(strtoupper($string))) as $char) {
             $num += $mul * (ord($char) - 64);
             $mul *= 26;
         }
+        $this->colIndexes[$string] = $num;
         return $num;
     }
 

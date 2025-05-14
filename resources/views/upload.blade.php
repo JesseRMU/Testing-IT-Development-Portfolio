@@ -10,7 +10,11 @@
     </div>
     <script type="application/javascript">
         document.getElementById("upload_button").addEventListener("click", e=>{
-            document.getElementById("loader").style.display = "flex";
+            const loader =  document.getElementById("loader");
+            loader.style.display = "flex";
+            const omschrijving = document.createElement("bestand wordt geüpload");
+            loader.appendChild(omschrijving);
+
             document.getElementById("upload_form").submit();
         });
     </script>

@@ -44,6 +44,7 @@
                 <x-widget title="Duur vs laadvermogen" bottomText="Dit is nu gewoon een plaatje uit excel">
                     <img src="images/Grafiek1.webp" class="max-h-[560px] w-full" />
                 </x-widget>
+
                 <x-widget title="Nog dezelfde grafiek" bottomText="Maar ander plaatje">
                     <img src="images/Grafiek2.png" class="max-h-[560px] w-full" />
                 </x-widget>

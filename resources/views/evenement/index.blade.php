@@ -1,4 +1,5 @@
 <x-main>
+    {{ $evenementen->links() }}
     <table>
         <tr>
             <th>id</th>
@@ -18,7 +19,7 @@
                     {{ $evenement->evenement_id }}
                 </td>
                 <td>
-                    {{ date("Y-m-d H:i:s", $evenement->evenement_begin_datum) }}
+                    {{ date("Y-m-d H:i", $evenement->evenement_begin_datum) }}
                 </td>
                 <td>
                     {{ ( $evenement->evenement_eind_datum - $evenement->evenement_begin_datum ) / 60 }}
@@ -47,4 +48,5 @@
             </tr>
         @endforeach
     </table>
+    {{ $evenementen->links() }}
 </x-main>

@@ -8,9 +8,7 @@ Route::get('/', function () {
     return view('index');
 })->name("home");
 
-Route::get('/upload', function () {
-    return view('upload');
-})->name("upload");
+Route::get('/upload', [ExcelUpload::class, 'uploadPagina'])->name("upload");
 
 Route::post("/upload_data", [ExcelUpload::class, "upload"])->name("upload_data");
 

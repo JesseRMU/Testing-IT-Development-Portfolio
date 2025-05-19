@@ -28,6 +28,7 @@
                     <a href="#" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "filters") selected @endif">Filters</a>
                     <a href="{{route("upload")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "upload") selected @endif">Upload Data</a>
                     <a href="{{route("evenementen.index")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "evenementen.index") selected @endif">Overzicht evenementen (demo)</a>
+                    <a href="{{route("heatmap")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "heatmap") selected @endif">Heatmap</a>
                 </nav>
             </div>
             {!! $slot !!}

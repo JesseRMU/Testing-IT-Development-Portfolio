@@ -13,3 +13,6 @@ Route::get('/upload', [ExcelUpload::class, 'uploadPagina'])->name("upload");
 Route::post("/upload_data", [ExcelUpload::class, "upload"])->name("upload_data");
 
 Route::resource("evenementen", "App\Http\Controllers\EvenementController")->only(["index"]);
+
+Route::view('/heatmap', 'heatmap.index')->name('heatmap');
+

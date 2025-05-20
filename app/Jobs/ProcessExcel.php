@@ -107,7 +107,7 @@ class ProcessExcel implements ShouldQueue
                             break;
                         case "v":
                             $value = $this->parseCellValue($reader->readString(), $strings, $cellType);
-                            if($value == "") {
+                            if ($value == "") {
                                 $value = null;
                             }
                             if ($rowNumber == 1) {
@@ -226,11 +226,11 @@ class ProcessExcel implements ShouldQueue
                 "regelnummer_in_bron" => $row["regelnummer_in_bron"],
                 "wachthaven_id" => $wachthaven_id,
                 "steiger_id" => $steiger_id,
-                "evenement_begin_datum" => match(env("DB_CONNECTION")) {
+                "evenement_begin_datum" => match (env("DB_CONNECTION")) {
                     "sqlite" => $begindatum,
                     "mysql" => date("Y-m-d H:i:s", $begindatum),
                 },
-                "evenement_eind_datum" =>match(env("DB_CONNECTION")) {
+                "evenement_eind_datum" =>match (env("DB_CONNECTION")) {
                     "sqlite" => $begindatum + intval($row["7  Duur van evenement"] ?? 0) * 60,
                     "mysql" => date("Y-m-d H:i:s", $begindatum + intval($row["7  Duur van evenement"] ?? 0) * 60),
                 },

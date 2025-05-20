@@ -19,10 +19,10 @@
                     {{ $evenement->evenement_id }}
                 </td>
                 <td>
-                    {{ date("Y-m-d H:i", $evenement->evenement_begin_datum) }}
+                    {{ $evenement->evenement_begin_datum }}
                 </td>
                 <td>
-                    {{ ( $evenement->evenement_eind_datum - $evenement->evenement_begin_datum ) / 60 }}
+                    {{ "" }}
                 </td>
                 <td>
                     {{ $evenement->vlag_code }}

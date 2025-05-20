@@ -20,7 +20,7 @@ return new class extends Migration
             $table->datetime('evenement_eind_datum')->nullable();
             $table->string('evenement_vaarrichting')->nullable();
 
-            $table->text('naam_ivs90_bestand');
+            $table->string('naam_ivs90_bestand');
             $table->integer('regelnummer_in_bron');
             $table->index(['naam_ivs90_bestand', 'regelnummer_in_bron'], "unieke_index");
             //deze twee velden zijn samen uniek. (vgm)
@@ -40,11 +40,11 @@ return new class extends Migration
             $table->integer('schip_lading_nstr')->unsigned()->nullable();
             $table->integer('schip_lading_reserve')->unsigned()->nullable();
             $table->integer('schip_lading_vn_nummer')->unsigned()->nullable();
-            $table->integer('schip_lading_klasse')->unsigned()->nullable();
-            $table->string('schip_lading_code')->unsigned()->nullable();
-            $table->integer('schip_lading_1e_etiket')->unsigned()->nullable();
-            $table->integer('schip_lading_2e_etiket')->unsigned()->nullable();
-            $table->integer('schip_lading_3e_etiket')->unsigned()->nullable();
+            $table->double('schip_lading_klasse')->unsigned()->nullable();
+            $table->string('schip_lading_code')->nullable();
+            $table->double('schip_lading_1e_etiket')->unsigned()->nullable();
+            $table->double('schip_lading_2e_etiket')->unsigned()->nullable();
+            $table->double('schip_lading_3e_etiket')->unsigned()->nullable();
             $table->integer('schip_lading_verpakkingsgroep')->unsigned()->nullable();
             $table->integer('schip_lading_marpol')->unsigned()->nullable();
             $table->integer('schip_lading_seinvoering_kegel')->unsigned()->nullable();

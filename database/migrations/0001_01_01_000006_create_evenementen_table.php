@@ -26,9 +26,7 @@ return new class extends Migration
             //deze twee velden zijn samen uniek. (vgm)
             $table->datetime('datum_inlezen')->nullable();
 
-
-            $table->string('schip_id')->nullable()->change();
-            $table->string('vlag_code')->nullable();
+            $table->integer('vlag_code')->unsigned()->nullable();
             //$table->string('schip_naam');
             $table->integer('schip_laadvermogen')->unsigned()->nullable();
             $table->integer('lengte')->unsigned()->nullable();
@@ -56,6 +54,8 @@ return new class extends Migration
             $table->integer('schip_containers_aantal')->unsigned()->nullable();
             $table->integer('schip_containers_type')->unsigned()->nullable();
             $table->integer('schip_containers_teus')->unsigned()->nullable();
+
+            $table->integer('schip_type')->unsigned()->nullable();
 
             //$table->foreign('schip_id')->references('schip_id')->on('schepen');
             $table->foreign('wachthaven_id')->references('wachthaven_id')->on('wachthavens');

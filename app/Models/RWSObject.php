@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Steiger extends Model
+class RWSObject extends Model
 {
-    /** @use HasFactory<\Database\Factories\SteigerFactory> */
-    use HasFactory;
+    protected $table = 'rws_objecten';
 
-    public function wachthaven(): HasOne {
-        return $this->hasOne(Wachthaven::class, "wachthaven_id", "wachthaven_id");
+    public function wachthavens(): HasMany {
+        return $this->hasMany(Wachthaven::class);
     }
 }

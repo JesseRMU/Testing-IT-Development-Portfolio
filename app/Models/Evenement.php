@@ -13,9 +13,6 @@ class Evenement extends Model
 
     protected $table = 'evenementen';
 
-    public function schip(): HasOne {
-        return $this->hasOne(Schip::class, "schip_id", "schip_id");
-    }
     public function steiger(): HasOne {
         return $this->hasOne(Steiger::class, "steiger_id", "steiger_id");
     }

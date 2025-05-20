@@ -9,10 +9,12 @@ class HeatmapController extends Controller
 {
     public function index()
     {
-        // Alle steigers met coordinaten ophalen
-        $steigers = Steiger::all();
+        // Haal alle steigers op waar lat en lng zijn ingevuld
+        $steigers = Steiger::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get(['steiger_code', 'latitude', 'longitude']);
 
-        // Doorsturen naar view met data
+        // Stuur data naar view
         return view('heatmap.index', compact('steigers'));
     }
 }

@@ -260,7 +260,8 @@ class ProcessExcel implements ShouldQueue
                 "schip_containers" => $row["30.1 Containers"] ?? null,
                 "schip_containers_aantal" => $row["30.2 Containers Aantal"] ?? null,
                 "schip_containers_type" => $row["30.3 Containers Type"] ?? null,
-                "schip_containers_teus" => $row["30.4 Containers TEUS"] ?? null
+                "schip_containers_teus" => $row["30.4 Containers TEUS"] ?? null,
+                "schip_type" => $row["15.1 Scheepstype RWS"] ?? null
             ];
         } else {
             //dump("bestaat al");

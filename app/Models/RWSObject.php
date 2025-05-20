@@ -11,7 +11,11 @@ class RWSObject extends Model
 {
     protected $table = 'rws_objecten';
 
-    public function wachthavens(): HasMany {
+    /**
+     * @return HasMany
+     */
+    public function wachthavens(): HasMany
+    {
         return $this->hasMany(Wachthaven::class);
     }
 }

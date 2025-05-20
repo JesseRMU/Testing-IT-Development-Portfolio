@@ -157,6 +157,10 @@ th {
     text-align: left;
 }
 
+#loader {
+    flex-direction: column;
+}
+
 .loader {
     width: 48px;
     height: 48px;

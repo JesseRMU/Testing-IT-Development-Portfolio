@@ -10,6 +10,7 @@
             <form action="{{route("upload_data")}}" method="POST" enctype="multipart/form-data" id="upload_form">
                 @csrf
                 <input required type="file" id="spreadsheet" name="spreadsheet" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                @error("spreadsheet")<p class="text-red-500">{{$message}}</p>@enderror
             </form>
             <button id="upload_button" class="button bg-[var(--grijs-2)]" >Uploaden</button>
         </x-widget>
@@ -26,7 +27,6 @@
             } else {
                 document.getElementById("upload_form").reportValidity();
             }
-
         });
     </script>
 </x-main>

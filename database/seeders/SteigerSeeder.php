@@ -13,7 +13,7 @@ class SteigerSeeder extends Seeder
      */
     public function run(): void
     {
-        $steigers = json_decode(file_get_contents('export steiger table.json'), false);
+        $steigers = json_decode(file_get_contents(database_path('seeders/export steigers table.json')), false);
         foreach ($steigers->rows as $steiger) {
             $a = ["steiger_id" => $steiger[0],
                 "wachthaven_id" => $steiger[1],
@@ -21,7 +21,8 @@ class SteigerSeeder extends Seeder
                 "latitude" => $steiger[4],
                 "longitude" => $steiger[5],
                 ];
-            new Steiger($a);
+            $s = new Steiger($a);
+            $s->save();
         }
     }
 }

@@ -11,6 +11,7 @@ class Wachthaven extends Model
 {
     /** @use HasFactory<\Database\Factories\WachthavenFactory> */
     use HasFactory;
+    public $timestamps = false;
 
     public function object(): HasOne {
         return $this->hasOne(RWSObject::class, "object_id", "object_id");

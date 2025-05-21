@@ -17,7 +17,10 @@ class SteigerSeeder extends Seeder
         foreach ($steigers->rows as $steiger) {
             $a = ["steiger_id" => $steiger[0],
                 "wachthaven_id" => $steiger[1],
-                "steiger_code" => $steiger[2],];
+                "steiger_code" => $steiger[2],
+                "latitude" => $steiger[4],
+                "longitude" => $steiger[5],
+                ];
             new Steiger($a);
         }
     }

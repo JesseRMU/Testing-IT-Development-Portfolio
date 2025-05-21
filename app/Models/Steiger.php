@@ -15,4 +15,6 @@ class Steiger extends Model
     public function wachthaven(): HasOne {
         return $this->hasOne(Wachthaven::class, "wachthaven_id", "wachthaven_id");
     }
+
+    protected $fillable = ['steiger_id', 'wachthaven_id', 'steiger_code', 'latitude', 'longitude'];
 }

@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evenement;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use App\Models\Steiger;
 
 class HeatmapController extends Controller
 {
+    /**
+     * @return Factory|View|Application|object
+     */
     public function index()
     {
         $coordinates = Evenement::with('steiger')

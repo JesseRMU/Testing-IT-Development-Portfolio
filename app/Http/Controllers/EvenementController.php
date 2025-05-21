@@ -12,7 +12,15 @@ class EvenementController extends Controller
      */
     public function index()
     {
-        $evenementen = Evenement::paginate(100);
+        // Haal de evenementen op uit de database
+        $evenementen = Evenement::with(['wachthaven', 'steiger'])->paginate(10);
+
+        // Check of deze data wordt opgehaald
+        if ($evenementen->isEmpty()) {
+            dd('Geen evenementen gevonden in de database.');
+        }
+
+        // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }
 
@@ -62,5 +70,47 @@ class EvenementController extends Controller
     public function destroy(Evenement $evenement)
     {
         //
+    }
+    public function groupByTime(Request $request)
+    {
+        // Validatie van de keuze
+        $request->validate([
+            'timeGrouping' => 'required|in:day_of_week,hour_of_day,week_of_year,month_of_year'
+        ]);
+
+        $timeGrouping = $request->input('timeGrouping');
+
+        // Dataset herschikken op basis van keuze
+        $chartData = $this->getChartDataGroupedBy($timeGrouping);
+
+        // Render de view opnieuw met nieuwe data
+        return view('index', compact('chartData'));
+    }
+
+    private function getChartDataGroupedBy($timeGrouping)
+    {
+        // Hier wordt de dataset aangepast (dummy data voor voorbeeld)
+        $data = [
+            'day_of_week' => ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'],
+            'hour_of_day' => range(0, 23),
+            'week_of_year' => range(1, 52),
+            'month_of_year' => ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
+        ];
+
+        // Dummy random waarden voor grafiek (gebruik echt data in de praktijk)
+        $values = array_map(fn () => rand(10, 100), $data[$timeGrouping]);
+
+        return [
+            'labels' => $data[$timeGrouping],
+            'datasets' => [
+                [
+                    'label' => 'Data',
+                    'data' => $values,
+                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
+                    'borderColor' => 'rgba(75, 192, 192, 1)',
+                    'borderWidth' => 1
+                ]
+            ]
+        ];
     }
 }

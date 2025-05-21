@@ -6,6 +6,7 @@ use App\Http\Controllers\ExcelUpload;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\GraphController;
 
+use App\Http\Controllers\SchipController;
 Route::get('/', function () {
     return view('index');
 })->name("home");
@@ -17,3 +18,5 @@ Route::resource("evenementen", "App\Http\Controllers\EvenementController")->only
 
 Route::get('/heatmap', [HeatmapController::class, 'index'])->name("heatmap");
 
+// Route voor het herschikken van grafiekdata
+Route::post('/chart/groupByTime', [EvenementController::class, 'groupByTime'])->name('chart.groupByTime');

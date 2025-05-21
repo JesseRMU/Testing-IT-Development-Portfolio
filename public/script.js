@@ -11,7 +11,7 @@ function createChart(chartData, type) {
         type: type,
         data: {
             // Horizontaal
-            labels: chartData.map(row => row.schip_id),
+            labels: chartData.map(row => row.evenement_id),
             datasets: [{
                 label: '# ship length',
                 // Verticaal

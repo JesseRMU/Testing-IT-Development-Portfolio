@@ -10,11 +10,11 @@ class GraphController extends Controller
 {
     /**
      * @return \Illuminate\Http\JsonResponse
-     * returning the database as $schepen
+     * returning the database as $evenementen
      */
     public function index()
     {
-        $schepen = DB::table('schepen')->get();
-        return response()->json($schepen);
+        $evenementen = DB::table('evenementen')->get();
+        return response()->json($evenementen);
     }
 }

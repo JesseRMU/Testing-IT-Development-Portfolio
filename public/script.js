@@ -1,6 +1,6 @@
 const ctx = document.getElementById('myChart');
 
-fetch("/schepen") // This is the Laravel route now
+fetch("/graphs")
     .then((response) => response.json())
     .then((data) => {
         createChart(data, 'bar');

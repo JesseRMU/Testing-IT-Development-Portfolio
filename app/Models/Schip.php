@@ -9,5 +9,5 @@ class Schip extends Model
 {
     /** @use HasFactory<\Database\Factories\SchipFactory> */
     use HasFactory;
-    protected $table = 'schepen';
+    protected $table = 'evenementen';
 }

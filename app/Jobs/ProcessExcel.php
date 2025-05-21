@@ -35,8 +35,12 @@ class ProcessExcel implements ShouldQueue
      */
     public function handle(): void
     {
-        //alvast alle bestaande steigers en wachthavens voorladen
+        \Log::info('ProcessExcel job gestart');
 
+        // Jouw verwerkingscode...
+
+        \Log::info('ProcessExcel job klaar');
+        //alvast alle bestaande steigers en wachthavens voorladen
         $this->wachthavens = DB::table("wachthavens")->pluck("wachthaven_id", "wachthaven_naam")->toArray();
         $steigers = DB::table("steigers")->get();
         foreach ($steigers as $steiger) {

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class RWSObject extends Model
 {
     protected $table = 'rws_objecten';
+    public $timestamps = false;
 
     /**
      * @return HasMany

@@ -10,6 +10,7 @@ class Evenement extends Model
 {
     /** @use HasFactory<\Database\Factories\EvenementFactory> */
     use HasFactory;
+    public $timestamps = false;
 
     protected $table = 'evenementen';
 

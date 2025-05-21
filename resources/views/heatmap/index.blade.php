@@ -25,7 +25,7 @@
             blur: 15,
             maxZoom: 17,
             minOpacity: 0.2,
-            maxOpacity: 1
+            maxOpacity: 10
         }).addTo(map);
     </script>
 

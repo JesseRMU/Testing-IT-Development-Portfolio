@@ -17,17 +17,19 @@ class HeatmapController extends Controller
      */
     public function index()
     {
-        $coordinates = DB::table("steigers")
-            ->join("evenementen", "steigers.steiger_id", "=", "evenementen.steiger_id")
-            ->select(DB::raw("count(*) as hoeveelheid, longitude, latitude"))
-            ->whereNotNull("latitude")->groupBy("steigers.steiger_id")->get()
-            ->map(function ($evenement) {
+        $coordinates = Steiger::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->withCount('evenementen') // telt automatisch het aantal gekoppelde evenementen
+            ->get()
+            ->map(function ($steiger) {
                 return [
-                    $evenement->latitude,
-                    $evenement->longitude,
-                    $evenement->hoeveelheid, // heatmap intensiteit per punt
+                    $steiger->latitude,
+                    $steiger->longitude,
+                    $steiger->evenementen_count / 2000, // bijvoorbeeld: normaliseer
                 ];
             });
+
         return view('heatmap.index', compact('coordinates'));
     }
+
 }

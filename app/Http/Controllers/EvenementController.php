@@ -84,10 +84,10 @@ class EvenementController extends Controller
         $chartData = $this->getChartDataGroupedBy($timeGrouping);
 
         // Render de view opnieuw met nieuwe data
-        return view('index', compact('chartData'));
+        return view('index', compact('chartData', 'timeGrouping'));
     }
 
-    private function getChartDataGroupedBy($timeGrouping)
+    public static function getChartDataGroupedBy($timeGrouping)
     {
         // Hier wordt de dataset aangepast (dummy data voor voorbeeld)
         $data = [

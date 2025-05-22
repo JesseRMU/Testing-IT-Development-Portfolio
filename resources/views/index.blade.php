@@ -34,8 +34,8 @@
         <div>
             <canvas id="myChart"></canvas>
         </div>
-
+        <script>var groupByTime = "{{ $timeGrouping ?? "" }}";</script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="script.js"></script>
+        <script src="/script.js"></script>
     </x-widget>
 </x-main>

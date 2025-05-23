@@ -70,7 +70,8 @@ class EvenementController extends Controller
     /**
      * Retrieve warnings for all events.
      */
-    public static function getWarnings () {
+    public static function getWarnings()
+    {
         // Gegevens ophalen
         $evenementen = Evenement::all();
         $wachthavens = Wachthaven::all()->keyBy('wachthaven_id');
@@ -92,11 +93,14 @@ class EvenementController extends Controller
         }
 
         // Steigers per dag naar waarschuwingen converteren
-        foreach ($evenementenperdag as $datum=>$evenementenperwachthaven) {
+        foreach ($evenementenperdag as $datum => $evenementenperwachthaven) {
             $wachthavenid = $evenementenperwachthaven->keys()->first();
             foreach ($evenementenperwachthaven as $evenementen) {
                 if ($evenementen->count() > $steigeraantalperlocatie->get($wachthavenid)) {
-                    $waarschuwingen->push(['locatie' => $wachthavens->get($wachthavenid)->wachthaven_naam, 'datum' => $datum, 'percentage' => round(($evenementen->count() / $steigeraantalperlocatie->get($wachthavenid)) * 100), 'evenementen' => $evenementen->count(), 'steigers' => $steigeraantalperlocatie->get($wachthavenid)]);
+                    $waarschuwingen->push(['locatie' => $wachthavens->get($wachthavenid)->wachthaven_naam,
+                    'datum' => $datum,
+                    'percentage' => round(($evenementen->count() / $steigeraantalperlocatie->get($wachthavenid)) * 100),
+                    'evenementen' => $evenementen->count(), 'steigers' => $steigeraantalperlocatie->get($wachthavenid)]);
                 }
             }
         }

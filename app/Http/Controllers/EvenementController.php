@@ -99,7 +99,8 @@ class EvenementController extends Controller
                 if ($evenementen->count() > $steigeraantalperlocatie->get($wachthavenid)) {
                     $waarschuwingen->push(['locatie' => $wachthavens->get($wachthavenid)->wachthaven_naam,
                     'datum' => $datum,
-                    'percentage' => round(($evenementen->count() / $steigeraantalperlocatie->get($wachthavenid)) * 100),
+                    'percentage' => round(($evenementen->count() / $steigeraantalperlocatie->get($wachthavenid))
+                    * 100),
                     'evenementen' => $evenementen->count(), 'steigers' => $steigeraantalperlocatie->get($wachthavenid)]);
                 }
             }

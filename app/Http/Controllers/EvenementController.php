@@ -101,7 +101,8 @@ class EvenementController extends Controller
                     'datum' => $datum,
                     'percentage' => round(($evenementen->count() / $steigeraantalperlocatie->get($wachthavenid))
                     * 100),
-                    'evenementen' => $evenementen->count(), 'steigers' => $steigeraantalperlocatie->get($wachthavenid)]);
+                    'evenementen' => $evenementen->count(),
+                    'steigers' => $steigeraantalperlocatie->get($wachthavenid)]);
                 }
             }
         }

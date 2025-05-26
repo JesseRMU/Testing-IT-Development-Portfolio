@@ -6,7 +6,6 @@ use App\Http\Controllers\ExcelUpload;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\GraphController;
 
-use App\Http\Controllers\SchipController;
 Route::get('/', function () {
     return view('index');
 })->name("home");

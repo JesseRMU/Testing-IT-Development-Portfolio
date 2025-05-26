@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evenement;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 class EvenementController extends Controller
@@ -71,6 +74,11 @@ class EvenementController extends Controller
     {
         //
     }
+
+    /**
+     * @param Request $request
+     * @return Factory|View|Application|object
+     */
     public function groupByTime(Request $request)
     {
         // Validatie van de keuze
@@ -87,6 +95,10 @@ class EvenementController extends Controller
         return view('index', compact('chartData', 'timeGrouping'));
     }
 
+    /**
+     * @param $timeGrouping
+     * @return array
+     */
     public static function getChartDataGroupedBy($timeGrouping)
     {
         // Hier wordt de dataset aangepast (dummy data voor voorbeeld)

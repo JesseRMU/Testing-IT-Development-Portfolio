@@ -14,6 +14,8 @@ Route::get('/graphs', [GraphController::class, 'index']);
 Route::get('/upload', [ExcelUpload::class, 'uploadPagina'])->name("upload");
 Route::post("/upload_data", [ExcelUpload::class, "upload"])->name("upload_data");
 Route::resource("evenementen", "App\Http\Controllers\EvenementController")->only(["index"]);
-
+Route::get("/filters", function(){
+    return view("filters");
+    })->name("filters");
 Route::get('/heatmap', [HeatmapController::class, 'index'])->name("heatmap");
 

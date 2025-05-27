@@ -23,7 +23,6 @@ class EvenementController extends Controller
         if ($evenementen->isEmpty()) {
             dd('Geen evenementen gevonden in de database.');
         }
-
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }

@@ -1,14 +1,6 @@
 <?php use App\Http\Controllers\EvenementController;
 $waarschuwingen = EvenementController::getWarnings(); ?>
 
-<script>
-    function togglevisibility(id) {
-        Array.from(document.getElementsByClassName(id)).forEach(e => {
-            e.style.display = (e.style.display === 'none') ? 'block' : 'none'
-        })
-    }
-</script>
-
 <x-main>
     @if ($waarschuwingen != null)
     <div class="flex row gap-5 flex-wrap">

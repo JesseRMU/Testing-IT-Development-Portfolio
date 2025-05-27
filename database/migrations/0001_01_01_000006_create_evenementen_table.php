@@ -40,9 +40,9 @@ return new class extends Migration
             $table->integer('schip_lading_vn_nummer')->unsigned()->nullable();
             $table->double('schip_lading_klasse')->unsigned()->nullable();
             $table->string('schip_lading_code')->nullable();
-            $table->double('schip_lading_1e_etiket')->unsigned()->nullable();
-            $table->double('schip_lading_2e_etiket')->unsigned()->nullable();
-            $table->double('schip_lading_3e_etiket')->unsigned()->nullable();
+            $table->string('schip_lading_1e_etiket')->nullable();
+            $table->string('schip_lading_2e_etiket')->nullable();
+            $table->string('schip_lading_3e_etiket')->nullable();
             $table->integer('schip_lading_verpakkingsgroep')->unsigned()->nullable();
             $table->integer('schip_lading_marpol')->unsigned()->nullable();
             $table->integer('schip_lading_seinvoering_kegel')->unsigned()->nullable();

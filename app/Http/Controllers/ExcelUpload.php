@@ -25,10 +25,12 @@ class ExcelUpload extends Controller
     public function upload(Request $request): string
     {
         ini_set("upload_max_filesize", "100M"); // zo kan een groot bestand geüploaded worden
+        ini_set("post_max_size", "100M"); // zo kan een groot bestand geüploaded worden
+
         $request->validate([
             "spreadsheet" => "required"
         ]);
-        
+
         $file = $request->file('spreadsheet');
         $id = uniqid();
 

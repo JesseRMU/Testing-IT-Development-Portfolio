@@ -25,7 +25,7 @@ class HeatmapController extends Controller
                 return [
                     $evenement->latitude,
                     $evenement->longitude,
-                    $evenement->hoeveelheid, // heatmap intensiteit per punt
+                    $evenement->hoeveelheid / 1500, // heatmap intensiteit per punt
                 ];
             });
         return view('heatmap.index', compact('coordinates'));

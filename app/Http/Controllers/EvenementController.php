@@ -141,7 +141,7 @@ class EvenementController extends Controller
                 ],
             ],
         ];
-
+    }
     /**
      * Retrieve warnings for all events.
      */

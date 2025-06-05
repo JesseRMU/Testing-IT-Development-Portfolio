@@ -13,7 +13,7 @@ if(groupByTime){
                 // Horizontaal
                 labels: chartData.labels,
                 datasets: [{
-                    label: '# ship length',
+                    label: 'aantal schepen',
                     // Verticaal
                     data: chartData.datasets[0].data,
                     borderWidth: 1

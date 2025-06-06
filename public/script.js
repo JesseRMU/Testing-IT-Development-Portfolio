@@ -31,7 +31,7 @@ if(groupByTime){
 
 }
 else {
-    fetch(`/graphs?group_by_time=${groupByTime}`)
+    fetch(`/graphs${window.location.search}`)
         .then((response) => response.json())
         .then((data) => {
             createChart(data, 'bar');

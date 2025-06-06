@@ -164,8 +164,53 @@ class EvenementController extends Controller
             $query = $query->join("wachthavens", "evenementen.wachthaven_id", "=", "wachthavens.wachthaven_id");
         }
         $request = request();
-        $query = self::applyCheckboxFilter($query, "wachthaven_id");
-        $query = self::applyCheckboxFilter($query, "schip_type");
+        /*
+        TODO:
+            numeriek:
+                schip_laadvermogen
+                lengte
+                breedte
+                diepgang
+                schip_containers_aantal
+                */
+        $checkbox = [
+            "wachthaven_id",
+            "schip_type",
+            "evenement_vaarrichting",
+            "vlag_code",
+            "schip_onderdeel_code",
+            "schip_beladingscode",
+            "schip_lading_system_code",
+            "schip_lading_nstr",
+            "schip_lading_reserve",
+            "schip_lading_vn_nummer",
+            "schip_lading_klasse",
+            "schip_lading_code",
+            "schip_lading_1e_etiket",
+            "schip_lading_2e_etiket",
+            "schip_lading_3e_etiket",
+            "schip_lading_verpakkingsgroep",
+            "schip_lading_marpol",
+            "schip_lading_seinvoering_kegel",
+            "schip_avv_klasse",
+            "schip_containers",
+            "schip_containers_type",
+            "schip_containers_teus"
+        ];
+        foreach ($checkbox as $name){
+            $query = self::applyCheckboxFilter($query, $name);
+        }
+        $nummer = [
+            "schip_laadvermogen",
+            "lengte",
+            "breedte",
+            "diepgang",
+            "schip_containers_aantal"
+        ];
+        foreach ($nummer as $name){
+            $query = self::applyNumberFilter($query, $name);
+        }
+
         $query = self::applyCheckboxFilter($query, "object_id", "wachthavens");
         return $query;
     }
@@ -181,10 +226,30 @@ class EvenementController extends Controller
         if(isset($values) && is_array($values)){
             $query = $query->where(function ($iquery) use ($values, $name, $table) {
                 foreach ($values as $value) {
+                    if($value == "null") {
+                        $value = null;
+                    }
                     $iquery = $iquery->orWhere($table.'.'.$name, $value);
                 }
                 return $iquery;
             });
+        }
+        return $query;
+    }
+
+    /**
+     * @param $query Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
+     * @param $name string
+     * @param $table string
+     * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
+     */
+    public static function applyNumberFilter($query, $name, $table = "evenementen"){
+        $values = request($name);
+        if(isset($values) && !is_null($values["min"])){
+            $query = $query->where($table.'.'.$name, ">=", $values["min"]);
+        }
+        if(isset($values) && !is_null($values["max"])){
+            $query = $query->where($table.'.'.$name, "<=", $values["max"]);
         }
         return $query;
     }

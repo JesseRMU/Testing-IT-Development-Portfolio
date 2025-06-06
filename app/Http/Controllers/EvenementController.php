@@ -158,4 +158,5 @@ class EvenementController extends Controller
 
         return $waarschuwingen;
     }
+
 }

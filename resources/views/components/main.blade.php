@@ -23,12 +23,12 @@
         </header>
         <main class="flex flex-auto px-5 flex-col gap-5">
             <div class="flex w-full">
-                <nav class="flex text-sm overflow-hidden items-center gap-2 bg-[#ededec] flex-initial h-10 px-2 rounded-md">
-                    <a href="{{route("home")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "home") selected @endif">Data</a>
-                    <a href="{{route("filters")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "filters") selected @endif">Filters</a>
-                    <a href="{{route("upload")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "upload") selected @endif">Upload Data</a>
-                    <a href="{{route("evenementen.index")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "evenementen.index") selected @endif">Overzicht evenementen (demo)</a>
-                    <a href="{{route("heatmap")}}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "heatmap") selected @endif">Heatmap</a>
+                <nav class="flex text-sm overflow-hidden items-center gap-2 bg-[#ededec] flex-initial h-10 px-2 rounded-md" id="links">
+                    <a href="{{route("home")}}?{{ request()->getQueryString() }}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "home") selected @endif">Data</a>
+                    <a href="{{route("filters")}}?{{ request()->getQueryString() }}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "filters") selected @endif">Filters</a>
+                    <a href="{{route("upload")}}?{{ request()->getQueryString() }}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "upload") selected @endif">Upload Data</a>
+                    <a href="{{route("evenementen.index")}}?{{ request()->getQueryString() }}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "evenementen.index") selected @endif">Overzicht evenementen (demo)</a>
+                    <a href="{{route("heatmap")}}?{{ request()->getQueryString() }}" class="flex flex-initial button justify-center @if(Route::currentRouteName() == "heatmap") selected @endif">Heatmap</a>
                 </nav>
             </div>
             {!! $slot !!}

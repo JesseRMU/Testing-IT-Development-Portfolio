@@ -28,6 +28,12 @@ class HeatmapController extends Controller
                     $steiger->evenementen_count / 2000, // heat intensity
                 ];
             });
-        return view('heatmap.index', compact('coordinates'));
+       $zonderCoordinaten = [];
+       foreach ( DB::table("wachthavens")->join("steigers", "steigers.wachthaven_id", "=", "wachthavens.wachthaven_id")->select("wachthaven_naam", "steiger_code")->whereNull("latitude")->get() as $steiger){
+            $zonderCoordinaten[$steiger->wachthaven_naam] = $zonderCoordinaten[$steiger->wachthaven_naam] ?? [] ;
+            $zonderCoordinaten[$steiger->wachthaven_naam][] = $steiger->steiger_code;
+       }
+
+        return view('heatmap.index', compact('coordinates',  'zonderCoordinaten'));
     }
 }

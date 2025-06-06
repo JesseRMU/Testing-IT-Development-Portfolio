@@ -26,6 +26,9 @@
             maxOpacity: 10
         }).addTo(map);
     </script>
-
-    <div class="h-15"></div>
+    De volgende steigers hebben (nog) geen coördinaten, maar komen wel voor in de data:
+    @foreach($zonderCoordinaten as $wachthaven => $steigers)
+        <br>
+        {{$wachthaven}}: {{implode(", ", $steigers)}}
+    @endforeach
 </x-main>

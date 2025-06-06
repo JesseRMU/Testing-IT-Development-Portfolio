@@ -20,7 +20,7 @@ class EvenementController extends Controller
     public function index()
     {
         // Haal de evenementen op uit de database
-        $evenementen = self::applyFilters( Evenement::with(['wachthaven', 'steiger']) )->paginate(10);
+        $evenementen = self::applyFilters( Evenement::with(['wachthaven', 'steiger']) )->paginate(25)->withQueryString();
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }

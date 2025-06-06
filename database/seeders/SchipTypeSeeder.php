@@ -30,7 +30,10 @@ class SchipTypeSeeder extends Seeder
                 ["schip_type" => 11, "schip_type_naam" => "Sleep-vrachtschip"],
                 ["schip_type" => 12, "schip_type_naam" => "Sleep-tankschip"],
                 ["schip_type" => 13, "schip_type_naam" => "Gekoppelde sleep-vrachtschepen"],
-                ["schip_type" => 14, "schip_type_naam" => "Gekoppelde sleep- vrachtschepen, minimaal 1 slepend motortankschip"],
+                [
+                    "schip_type" => 14,
+                    "schip_type_naam" => "Gekoppelde sleep- vrachtschepen, minimaal 1 slepend motortankschip"
+                ],
                 ["schip_type" => 15, "schip_type_naam" => "Vrachtduwbak"],
                 ["schip_type" => 16, "schip_type_naam" => "Tankduwbak"],
                 ["schip_type" => 17, "schip_type_naam" => "Vrachtduwbak met containers"],
@@ -84,7 +87,10 @@ class SchipTypeSeeder extends Seeder
                 ["schip_type" => 83, "schip_type_naam" => "Zeilend jacht"],
                 ["schip_type" => 84, "schip_type_naam" => "Vaartuig voor sportvissers"],
                 ["schip_type" => 85, "schip_type_naam" => "Grote recreatievaart >20m"],
-                ["schip_type" => 89, "schip_type_naam" => "Overige recreatievaartuigen (roeiboot, kano, rubberboot, zeilplank etc.)"],
+                [
+                    "schip_type" => 89,
+                    "schip_type_naam" => "Overige recreatievaartuigen (roeiboot, kano, rubberboot, zeilplank etc.)"
+                ],
                 ["schip_type" => 90, "schip_type_naam" => "Snel schip"]
             ]
         );

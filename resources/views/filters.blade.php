@@ -3,18 +3,9 @@
         <x-widget title="Filteren op veld" class="max-w-[400px!important]">
             <div class="overflow-y-auto">
                 <!--
-                TODO:
                     checkbox niet ingevuld:
                         evenement_vaarrichting
                         schip_lading_marpol
-                    numeriek:
-                        schip_laadvermogen
-                        lengte
-                        breedte
-                        diepgang
-                        schip_vervoerd_gewicht
-                        schip_aantal_passagiers
-                        schip_containers_aantal
                 -->
 
                 <x-filter table="evenementen" name="schip_laadvermogen" type="number" />

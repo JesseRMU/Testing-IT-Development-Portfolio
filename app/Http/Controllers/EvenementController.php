@@ -164,15 +164,6 @@ class EvenementController extends Controller
             $query = $query->join("wachthavens", "evenementen.wachthaven_id", "=", "wachthavens.wachthaven_id");
         }
         $request = request();
-        /*
-        TODO:
-            numeriek:
-                schip_laadvermogen
-                lengte
-                breedte
-                diepgang
-                schip_containers_aantal
-                */
         $checkbox = [
             "wachthaven_id",
             "schip_type",

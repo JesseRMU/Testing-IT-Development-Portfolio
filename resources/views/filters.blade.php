@@ -1,9 +1,10 @@
 <x-main>
     <form id="filters">
-        <x-widget title="Filteren op veld">
+        <x-widget title="Filteren op veld" class="max-w-[400px!important]">
             <div class="overflow-y-auto max-h-160">
-                <x-filter table="evenementen" name="schip_type" type="checkbox" />
-                <x-filter table="wachthavens" name="wachthaven_id" titles="wachthaven_naam" type="checkbox" />
+                <x-filter table="evenementen" titletable="schip_types" titles="schip_type_naam" name="schip_type" type="checkbox" />
+                <x-filter table="evenementen" titletable="wachthavens" name="wachthaven_id" titles="wachthaven_naam" type="checkbox" />
+                <x-filter table="wachthavens" titletable="rws_objecten" name="object_id" titles="object_naam" type="checkbox" />
             </div>
         </x-widget>
     </form>
@@ -13,14 +14,14 @@
         filters.addEventListener("input", () => {
           const formData = new FormData(filters);
           const params = new URLSearchParams(formData);
-          window.history.replaceState(null, undefined, window.location.href.replaceAll(window.location.search, "?" + params.toString())); //  "?" + params.toString();
+          const url = new URL(window.location.href);
+          url.search = "?" + params.toString();
+          window.history.replaceState(null, undefined, url.href);
           for (const link of links){
             const url = new URL(link.href);
             url.search = "?" + params.toString();
             link.href = url.href;
           }
-
-          console.log(params.toString());
         });
     </script>
 </x-main>

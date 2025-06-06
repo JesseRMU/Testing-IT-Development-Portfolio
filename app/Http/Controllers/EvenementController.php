@@ -20,12 +20,7 @@ class EvenementController extends Controller
     public function index()
     {
         // Haal de evenementen op uit de database
-        $evenementen = Evenement::with(['wachthaven', 'steiger'])->paginate(10);
-
-        // Check of deze data wordt opgehaald
-        if ($evenementen->isEmpty()) {
-            dd('Geen evenementen gevonden in de database.');
-        }
+        $evenementen = self::applyFilters( Evenement::with(['wachthaven', 'steiger']) )->paginate(10);
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }
@@ -157,6 +152,41 @@ class EvenementController extends Controller
         $waarschuwingen =  WaarschuwingService::getWarnings($evenementen, $steigers, $wachthavens);
 
         return $waarschuwingen;
+    }
+
+    /**
+     * @param $query Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
+     * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
+     */
+    public static function applyFilters($query){
+        // zo nodig een inner join doen op wachthavens, zodat we kunnen filteren op object_id
+        if(!is_null(request("object_id"))){
+            $query = $query->join("wachthavens", "evenementen.wachthaven_id", "=", "wachthavens.wachthaven_id");
+        }
+        $request = request();
+        $query = self::applyCheckboxFilter($query, "wachthaven_id");
+        $query = self::applyCheckboxFilter($query, "schip_type");
+        $query = self::applyCheckboxFilter($query, "object_id", "wachthavens");
+        return $query;
+    }
+
+    /**
+     * @param $query Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
+     * @param $name string
+     * @param $table string
+     * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
+     */
+    public static function applyCheckboxFilter($query, $name, $table = "evenementen"){
+        $values = request($name);
+        if(isset($values) && is_array($values)){
+            $query = $query->where(function ($iquery) use ($values, $name, $table) {
+                foreach ($values as $value) {
+                    $iquery = $iquery->orWhere($table.'.'.$name, $value);
+                }
+                return $iquery;
+            });
+        }
+        return $query;
     }
 
 }

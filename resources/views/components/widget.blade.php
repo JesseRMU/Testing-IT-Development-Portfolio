@@ -1,4 +1,4 @@
-<div class="rounded-2xl bg-white text-[var(--grijs-7)] border-gray-200 border-1 p-5 {{ isset($small) ? "flex-auto" : "flex-initial max-w-[900px]"}}">
+<div class="rounded-2xl bg-white text-[var(--grijs-7)] border-gray-200 border-1 p-5 {{ isset($small) ? "flex-auto" : "flex-initial max-w-[900px]"}} {{$class ?? ""}}">
     @if(!isset($noedit))
     <div class="widget-menu" tabindex="0">
         <ol>

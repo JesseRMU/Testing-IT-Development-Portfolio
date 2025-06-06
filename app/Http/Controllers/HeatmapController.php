@@ -17,7 +17,7 @@ class HeatmapController extends Controller
      */
     public function index(): View
     {
-        $coordinates = Steiger::whereNotNull('latitude')
+        $coordinates = EvenementController::applyFilters( Steiger::whereNotNull('latitude') )
             ->whereNotNull('longitude')
             ->withCount('evenementen') // telt aantal events
             ->get()
@@ -28,7 +28,6 @@ class HeatmapController extends Controller
                     $steiger->evenementen_count / 2000, // heat intensity
                 ];
             });
-
         return view('heatmap.index', compact('coordinates'));
     }
 }

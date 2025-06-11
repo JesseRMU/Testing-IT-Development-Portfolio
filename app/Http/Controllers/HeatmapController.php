@@ -17,9 +17,11 @@ class HeatmapController extends Controller
      */
     public function index(): View
     {
-        $coordinates = EvenementController::applyFilters( Steiger::whereNotNull('latitude') )
+        $coordinates = Steiger::whereNotNull('latitude')
             ->whereNotNull('longitude')
-            ->withCount('evenementen') // telt aantal events
+            ->withCount(['evenementen as evenementen_count' => function($query) {
+                return EvenementController::applyFilters( $query );
+            }]) // telt aantal events
             ->get()
             ->map(function ($steiger) {
                 return [

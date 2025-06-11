@@ -19,9 +19,10 @@ class HeatmapController extends Controller
     {
         $coordinates = Steiger::whereNotNull('latitude')
             ->whereNotNull('longitude')
-            ->withCount(['evenementen as evenementen_count' => function($query) {
+            ->withCount(['evenementen' => function($query) {
                 return EvenementController::applyFilters( $query );
-            }]) // telt aantal events
+            }])// telt aantal events
+            ->having('evenementen_count', '>', 0)
             ->get()
             ->map(function ($steiger) {
                 return [
@@ -30,8 +31,9 @@ class HeatmapController extends Controller
                     $steiger->evenementen_count / 2000, // heat intensity
                 ];
             });
+
        $zonderCoordinaten = [];
-       foreach ( DB::table("wachthavens")->join("steigers", "steigers.wachthaven_id", "=", "wachthavens.wachthaven_id")->select("wachthaven_naam", "steiger_code")->whereNull("latitude")->get() as $steiger){
+       foreach ( DB::table("wachthavens")->join("steigers", "steigers.wachthaven_id", "=", "wachthavens.wachthaven_id")->select("wachthaven_naam", "steiger_code")->whereNull("latitude")->orWhereNull("longitude")->orderBy("steiger_code")->get() as $steiger){
             $zonderCoordinaten[$steiger->wachthaven_naam] = $zonderCoordinaten[$steiger->wachthaven_naam] ?? [] ;
             $zonderCoordinaten[$steiger->wachthaven_naam][] = $steiger->steiger_code;
        }

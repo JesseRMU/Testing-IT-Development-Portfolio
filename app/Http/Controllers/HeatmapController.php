@@ -19,13 +19,13 @@ class HeatmapController extends Controller
     {
         $coordinates = Steiger::whereNotNull('latitude')
             ->whereNotNull('longitude')
-            ->withCount('evenementen') // telt automatisch het aantal gekoppelde evenementen
+            ->withCount('evenementen') // telt aantal events
             ->get()
             ->map(function ($steiger) {
                 return [
                     $steiger->latitude,
                     $steiger->longitude,
-                    $steiger->evenementen_count / 2000, // bijvoorbeeld: normaliseer
+                    $steiger->evenementen_count / 2000, // heat intensity
                 ];
             });
 

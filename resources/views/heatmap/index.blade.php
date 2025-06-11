@@ -16,7 +16,6 @@
 
         // Zet de coordinaten en intensity om naar json
         const coordinates = @json($coordinates);
-        console.log(coordinates);
 
         // Voeg heatlayer toe
         L.heatLayer(coordinates, {

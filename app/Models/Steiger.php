@@ -19,6 +19,11 @@ class Steiger extends Model
         return $this->hasOne(Wachthaven::class, "wachthaven_id", "wachthaven_id");
     }
 
+    /**
+     * Haalt alle evenementen op die aan deze Steiger gekoppeld zijn.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function evenementen(): HasMany
     {
         return $this->hasMany(Evenement::class, 'steiger_id', 'steiger_id');

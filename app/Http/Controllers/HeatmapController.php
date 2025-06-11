@@ -13,21 +13,22 @@ use Illuminate\Support\Facades\DB;
 class HeatmapController extends Controller
 {
     /**
-     * @return Factory|View|Application|object
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $coordinates = DB::table("steigers")
-            ->join("evenementen", "steigers.steiger_id", "=", "evenementen.steiger_id")
-            ->select(DB::raw("count(*) as hoeveelheid, longitude, latitude"))
-            ->whereNotNull("latitude")->groupBy("steigers.steiger_id")->get()
-            ->map(function ($evenement) {
+        $coordinates = Steiger::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->withCount('evenementen') // telt aantal events
+            ->get()
+            ->map(function ($steiger) {
                 return [
-                    $evenement->latitude,
-                    $evenement->longitude,
-                    $evenement->hoeveelheid / 1500, // heatmap intensiteit per punt
+                    $steiger->latitude,
+                    $steiger->longitude,
+                    $steiger->evenementen_count / 2000, // heat intensity
                 ];
             });
+
         return view('heatmap.index', compact('coordinates'));
     }
 }

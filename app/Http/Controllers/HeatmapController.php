@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\DB;
 class HeatmapController extends Controller
 {
     /**
-     * @return Factory|View|Application|object
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $coordinates = Steiger::whereNotNull('latitude')
             ->whereNotNull('longitude')
@@ -31,5 +31,4 @@ class HeatmapController extends Controller
 
         return view('heatmap.index', compact('coordinates'));
     }
-
 }

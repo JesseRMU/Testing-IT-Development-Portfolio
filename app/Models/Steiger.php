@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @method static whereNotNull(string $string)
+ */
 class Steiger extends Model
 {
     /** @use HasFactory<\Database\Factories\SteigerFactory> */
@@ -16,7 +19,7 @@ class Steiger extends Model
         return $this->hasOne(Wachthaven::class, "wachthaven_id", "wachthaven_id");
     }
 
-    public function evenementen()
+    public function evenementen(): HasMany
     {
         return $this->hasMany(Evenement::class, 'steiger_id', 'steiger_id');
     }

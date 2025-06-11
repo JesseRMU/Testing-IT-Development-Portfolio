@@ -58,6 +58,8 @@
     --grijs-5: #999999;
     --grijs-6: #696969;
     --grijs-7: #535353;
+    --waarschuwing-achtergrond: #D28A8A;
+    --waarschuwing-tekst: #BA1D1D;
 }
 
 body {
@@ -155,6 +157,30 @@ form > input {
 
 th {
     text-align: left;
+}
+
+.waarschuwing {
+    background-color: var(--waarschuwing-achtergrond);
+    color: var(--waarschuwing-tekst);
+    padding: 24;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    max-width: 300px;
+}
+
+.waarschuwing > h2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.waarschuwing > p {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.waarschuwing > h1 {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 #loader {

@@ -22,7 +22,7 @@
             radius: 25,
             blur: 15,
             maxZoom: 17,
-            minOpacity: 0.2,
+            minOpacity: 0.5,
             maxOpacity: 10
         }).addTo(map);
     </script>

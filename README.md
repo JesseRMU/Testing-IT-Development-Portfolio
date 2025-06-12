@@ -95,3 +95,15 @@ Als data-analist wil ik op de hoogte gebracht worden als het ligplaatsgebruik va
 - toon waarschuwingen wanneer er meer evenementen dan steigers zijn met factories en database (feature)
 - toon geen waarschuwingen wanneer er minder evenementen dan steigers zijn met factories en database (feature)
 
+#### Github test resultaten
+![Github test resultaten](/resources/images/tests/github1.PNG "Github task tests")
+
+### Evaluatie
+Deze test kijken of de logica van de code goed werkt.
+Denk hierbij van het verwerken van data en het genereren van waarschuwingen. 
+Mocht er een fout zijn bij het generen van waarschuwingen pakken deze tests dat op.
+Bijvoorbeeld als er wat mis gaat op het database niveau, data verwerkings niveau, of waarschuwing genereer niveau.
+Deze tests testen alleen de logica, met en zonder database.
+Het kan niet zien of de waarschuwingen daadwerkelijk goed op de pagina('s) getoond worden.
+Je kan dus wel met deze tests zien het waarschuwingssysteem werkt, maar voor de front-end met iemand er zelf naar kijken.
+

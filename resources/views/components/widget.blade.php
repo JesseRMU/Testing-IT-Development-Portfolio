@@ -2,6 +2,11 @@
     @if(!isset($noedit))
     <div class="widget-menu" tabindex="0">
         <ol>
+            @if($title == "Testgrafiek met Graph.js")
+            <li id="exportChartPNG" tabindex="0">Exporteer naar png</li>
+            <li id="exportChartJPG" tabindex="0">Exporteer naar jpg</li>
+            <li id="exportChartPDF" tabindex="0">Exporteer naar pdf</li>
+            @endif
             <li tabindex="0">Optie</li>
             <li tabindex="0">Optie 2</li>
         </ol>

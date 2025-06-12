@@ -15,7 +15,8 @@ class GetWarningsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    // Test om te controleren of waarschuwingen worden weergegeven wanneer er meer evenementen zijn dan steigers - met factories en database
+    // Test om te controleren of waarschuwingen worden weergegeven wanneer er
+    // meer evenementen zijn dan steigers - met factories en database
     public function toon_waarschuwingen_wanneer_meer_evenementen_dan_steigers_feature_met_database()
     {
 
@@ -46,7 +47,8 @@ class GetWarningsTest extends TestCase
     }
 
     /** @test */
-    // Test om te controleren of er geen waarschuwingen worden weergegeven wanneer er minder evenementen zijn dan steigers - met factories en database
+    // Test om te controleren of er geen waarschuwingen worden weergegeven wanneer er
+    // minder evenementen zijn dan steigers - met factories en database
     public function toon_geen_waarschuwingen_wanneer_minder_evenementen_dan_steigers_feature_met_database()
     {
         // Maak wachthaven aan

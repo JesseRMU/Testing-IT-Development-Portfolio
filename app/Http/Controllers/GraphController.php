@@ -17,7 +17,7 @@ class GraphController extends Controller
         if(isset($request->group_by_time)) {
             // Validatie van de keuze
             $request->validate([
-                'group_by_time' => 'required|in:day_of_week,hour_of_day,week_of_year,month_of_year'
+                'group_by_time' => 'required|in:day,day_of_week,hour_of_day,week_of_year,month_of_year'
             ]);
 
             $timeGrouping = $request->input('group_by_time');

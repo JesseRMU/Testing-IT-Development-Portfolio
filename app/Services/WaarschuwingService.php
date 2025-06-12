@@ -13,9 +13,11 @@ class WaarschuwingService
      * @param Collection $wachthavens   Collection van wachthavens
      * @return Collection
      */
-    public static function getWarnings(Collection $evenementen, Collection $steigers,
-    Collection $wachthavens): Collection
-    {
+    public static function getWarnings(
+            Collection $evenementen,
+            Collection $steigers,
+            Collection $wachthavens
+        ): Collection {
         $steigers = $steigers->groupBy('wachthaven_id');
         $steigeraantalperlocatie = collect();
 

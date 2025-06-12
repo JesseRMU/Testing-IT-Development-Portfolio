@@ -64,3 +64,34 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# User stories
+
+## User story User story 9 – Meldingen hoog ligplaatsgebruik 
+
+Als data-analist wil ik op de hoogte gebracht worden als het ligplaatsgebruik van een object heel hoog is zodat ik snel zie bij welke objecten het vaak heel druk is. Dit moet voor iedere dag getoond worden waar de ligplaatsbezetting boven het percentage is. Het percentage wordt later bepaald. 
+
+### Acceptance Criteria 
+
+#### Main Flow 
+- Given: De data-analist is op het dashboard. 
+- When: Een object heeft een hoog ligplaatsgebruik. 
+- Then: Het dashboard toont een melding. 
+- Then: De data-analist drukt op de melding voor meer details. 
+
+#### Alternate Flow 
+- Given: De data-analist is op het dashboard. 
+- When: Er is nergens hoog ligplaatsgebruik. 
+- Then: Er wordt geen melding weergegeven. 
+
+#### Exception Flow 
+- Given: De data-analist is op het dashboard. 
+- When: Er is een fout bij het ophalen van de data. 
+- Then: Het dashboard geeft een foutmelding en er zijn geen meldingen getoond.
+
+### Testplan
+- toon waarschuwingen wanneer er meer evenementen dan steigers zijn systeem op code level (unit)
+- toon geen waarschuwingen wanneer er minder evenementen dan steigers zijn op code level (unit)
+- toon waarschuwingen wanneer er meer evenementen dan steigers zijn met factories en database (feature)
+- toon geen waarschuwingen wanneer er minder evenementen dan steigers zijn met factories en database (feature)
+

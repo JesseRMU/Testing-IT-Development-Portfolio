@@ -1,9 +1,11 @@
-<?php use App\Http\Controllers\EvenementController;
+<?php
+use App\Http\Controllers\EvenementController;
 try {$waarschuwingen = EvenementController::getWarnings();}
 catch (Exception $e) {
     $waarschuwingen = null;
     //negeer de error en zet de waarschuwingen op null
-} ?>
+}
+?>
 
 <x-main>
     <!-- Widgets en nieuwe dropdown -->

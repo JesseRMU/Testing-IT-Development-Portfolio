@@ -10,7 +10,7 @@ catch (Exception $e) {
 <x-main>
     <!-- Widgets en nieuwe dropdown -->
     @if ($waarschuwingen != null)
-    <div class="flex row gap-5 flex-wrap">
+    <div class="flex row gap-5 overflow-x-auto">
         @foreach($waarschuwingen as $waarschuwingnummer=>$waarschuwing)
         <a onClick="togglevisibility('waarschuwing{{ $waarschuwingnummer }}')" class="flex flex-col gap-5 flex-wrap">
             <div class="rounded-2xl waarschuwing border-1 p-5">

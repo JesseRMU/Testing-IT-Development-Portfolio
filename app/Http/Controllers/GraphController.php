@@ -25,7 +25,7 @@ class GraphController extends Controller
             // Dataset herschikken op basis van keuze
             $chartData = EvenementController::getChartDataGroupedBy($timeGrouping);
         } else {
-            $chartData = DB::table('evenementen')->get();
+            $chartData = EvenementController::applyFilters( DB::table('evenementen') )->get();
         }
         return response()->json($chartData);
     }

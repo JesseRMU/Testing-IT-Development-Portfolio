@@ -44,6 +44,14 @@ class GetWarningsTest extends TestCase
         $this->assertEquals(4, $warnings->first()['evenementen']);
         $this->assertEquals(2, $warnings->first()['steigers']);
         $this->assertEquals(200, $warnings->first()['percentage']);
+
+        $view = $this->blade(
+            '<x-widget title="Testgrafiek met Graph.js">Test Content</x-widget>'
+        );
+
+        $view->assertSee('id="exportChartPNG"', false);
+        $view->assertSee('id="exportChartJPG"', false);
+        $view->assertSee('id="exportChartPDF"', false);
     }
 
     /** @test */

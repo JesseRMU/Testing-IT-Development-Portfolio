@@ -203,6 +203,9 @@ class EvenementController extends Controller
         }
 
         $query = self::applyCheckboxFilter($query, "object_id", "wachthavens");
+
+        $query = self::applyDateFilter($query);
+
         return $query;
     }
 
@@ -245,4 +248,25 @@ class EvenementController extends Controller
         return $query;
     }
 
+    /**
+     * Filter tussen begin en eind datum
+     *
+     * @param $query
+     * @param string $column
+     * @return mixed
+     */
+    public static function applyDateFilter($query, string $column = 'evenement_begin_datum') {
+        $from = request('startDate');
+        $to = request('endDate');
+
+        if ($from) {
+            $query = $query->whereDate($column, '>=', $from);
+        }
+
+        if ($to) {
+            $query = $query->whereDate($column, '<=', $to);
+        }
+
+        return $query;
+    }
 }

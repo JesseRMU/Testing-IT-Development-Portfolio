@@ -9,4 +9,3 @@ flatpickr("#startDate", {
     plugins: [new rangePlugin({ input: "#endDate" })],
     dateFormat: "Y-m-d",
 });
-

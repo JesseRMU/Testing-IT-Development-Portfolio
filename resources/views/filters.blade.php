@@ -3,7 +3,11 @@
 
         <x-widget title="Filteren op veld" class="w-[400px] overflow-visible">
             <div>
-                <!-- Veldfilters -->
+                <!--
+                    checkbox niet ingevuld:
+                        evenement_vaarrichting
+                        schip_lading_marpol
+                -->
                 <x-filter table="evenementen" name="schip_laadvermogen" type="number" />
                 <x-filter table="evenementen" name="lengte" type="number" />
                 <x-filter table="evenementen" name="breedte" type="number" />
@@ -45,21 +49,19 @@
     </form>
 
     <script type="application/javascript">
-        const links = [...document.getElementById("links").querySelectorAll("a")];
+        const links = [... document.getElementById("links").querySelectorAll("a")];
         const filters = document.getElementById("filters");
-
         filters.addEventListener("input", () => {
-            if (filters.reportValidity()) {
+            if(filters.reportValidity()){
                 const formData = new FormData(filters);
                 const params = new URLSearchParams(formData);
                 const url = new URL(window.location.href);
                 url.search = "?" + params.toString();
                 window.history.replaceState(null, undefined, url.href);
-
                 for (const link of links) {
-                    const linkUrl = new URL(link.href);
-                    linkUrl.search = "?" + params.toString();
-                    link.href = linkUrl.href;
+                    const url = new URL(link.href);
+                    url.search = "?" + params.toString();
+                    link.href = url.href;
                 }
             }
         });

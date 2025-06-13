@@ -2,22 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Wachthaven;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Wachthaven>
- */
 class WachthavenFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Wachthaven::class;
+
+    public function definition()
     {
         return [
-            //
+            'wachthaven_id' => $this->faker->unique()->numberBetween(1, 1000),
+            'wachthaven_naam' => $this->faker->company . ' Test Haven',
+            // Add any additional fields here if your schema has them
         ];
     }
 }

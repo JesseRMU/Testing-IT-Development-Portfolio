@@ -255,7 +255,8 @@ class EvenementController extends Controller
      * @param string $column
      * @return mixed
      */
-    public static function applyDateFilter($query, string $column = 'evenement_begin_datum') {
+    public static function applyDateFilter($query, string $column = 'evenement_begin_datum')
+    {
         $from = request('startDate');
         $to = request('endDate');
 

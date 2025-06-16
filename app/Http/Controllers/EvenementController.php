@@ -20,7 +20,7 @@ class EvenementController extends Controller
     public function index()
     {
         // Haal de evenementen op uit de database
-        $evenementen = self::applyFilters( Evenement::with(['wachthaven', 'steiger']) )->paginate(25)->withQueryString();
+        $evenementen = self::applyFilters( Evenement::with(['wachthaven', 'steiger']) )->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur") ])->paginate(25)->withQueryString();
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }
@@ -109,7 +109,7 @@ class EvenementController extends Controller
         };
 
         // Query evenementen, groeperen en tellen
-        $data = DB::table('evenementen')
+        $data = Self::applyFilters(DB::table('evenementen'))
             ->select($groupColumn, DB::raw('COUNT(*) AS total')) // Selecteer label en total
             ->groupBy('label') // Groep op label
             ->orderByRaw("

@@ -25,7 +25,7 @@
                         {{ $evenement->evenement_begin_datum }}
                     </td>
                     <td>
-                        {{ "" }}
+                        {{ $evenement->duur }}
                     </td>
                     <td>
                         {{ $evenement->vlag_code }}

@@ -1,6 +1,6 @@
 const ctx = document.getElementById('myChart');
 if(groupByTime){
-    fetch(`/graphs?group_by_time=${groupByTime}`)
+    fetch(`/graphs${window.location.search || "?"}&group_by_time=${groupByTime}`)
         .then((response) => response.json())
         .then((data) => {
             createChart(data, 'bar');

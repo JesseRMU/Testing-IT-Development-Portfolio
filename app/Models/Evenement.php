@@ -17,6 +17,7 @@ class Evenement extends Model
     public function steiger(): HasOne {
         return $this->hasOne(Steiger::class, "steiger_id", "steiger_id");
     }
+
     public function wachthaven(): HasOne {
         return $this->hasOne(Wachthaven::class, "wachthaven_id", "wachthaven_id");
     }

@@ -187,8 +187,7 @@ class EvenementController extends Controller
             "schip_lading_seinvoering_kegel",
             "schip_avv_klasse",
             "schip_containers",
-            "schip_containers_type",
-            "schip_containers_teus"
+            "schip_containers_type"
         ];
         foreach ($checkbox as $name){
             $query = self::applyCheckboxFilter($query, $name);
@@ -198,7 +197,8 @@ class EvenementController extends Controller
             "lengte",
             "breedte",
             "diepgang",
-            "schip_containers_aantal"
+            "schip_containers_aantal",
+            "schip_containers_teus"
         ];
         foreach ($nummer as $name){
             $query = self::applyNumberFilter($query, $name);

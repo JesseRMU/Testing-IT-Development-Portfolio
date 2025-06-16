@@ -37,7 +37,7 @@
                 <x-filter table="evenementen" name="schip_avv_klasse" type="checkbox" />
                 <x-filter table="evenementen" name="schip_containers" type="checkbox" />
                 <x-filter table="evenementen" name="schip_containers_type" type="checkbox" />
-                <x-filter table="evenementen" name="schip_containers_teus" type="checkbox" />
+                <x-filter table="evenementen" name="schip_containers_teus" type="number" />
             </div>
         </x-widget>
 

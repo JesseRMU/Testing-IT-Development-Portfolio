@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\EvenementController;
+use Illuminate\Support\Facades\DB;
 try {$waarschuwingen = EvenementController::getWarnings();}
 catch (Exception $e) {
     $waarschuwingen = null;
@@ -25,9 +26,9 @@ catch (Exception $e) {
     </div>
     @endif
     <div class="flex flex-row gap-5 flex-wrap">
-        <!--<x-widget title="Totaal Ligplaatsen Jaar" bottomText="+20% meer dan 2024" small>
-            <p class="text-3xl font-semibold">16,928</p>
-        </x-widget>
+        <x-widget title="Totaal Evenementen Geselecteerd" bottomText="">
+            <p class="text-3xl font-semibold">{{ EvenementController::applyFilters( DB::table("evenementen") )->select(DB::raw("COUNT(*) as count"))->first()->count }}</p>
+        </x-widget><!--
         <x-widget title="Totaal Ligplaatsen Maand" bottomText="+33% meer dan Februari" small>
             <p class="text-3xl font-semibold">4,405</p>
         </x-widget>
@@ -37,7 +38,7 @@ catch (Exception $e) {
 
         <!-- Nieuwe Dropdown Widget -->
         <x-widget title="Groeperen op tijd">
-            <form method="POST" action="{{ route('chart.groupByTime') }}">
+            <form method="get" action="{{ route('chart.groupByTime') }}?{{ request()->getQueryString() }}" id="groepeer">
                 @csrf
                 <label for="timeGrouping" class="block mb-2 font-semibold">Opties:</label>
                 <select id="timeGrouping" name="timeGrouping" class="border-gray-300 rounded p-2 w-full">
@@ -51,6 +52,24 @@ catch (Exception $e) {
                     Toepassen
                 </button>
             </form>
+            <script>
+                const form = document.getElementById("groepeer");
+
+                let url = form.action;
+
+                let index = url.indexOf("?");
+                let action = url.slice(0, index)
+                let params = url.slice(index);
+                url = new URLSearchParams(params);
+                for (const param of url.keys()){
+                    let paramValue = url.get(param);
+                    let hidden = document.createElement("INPUT");
+                    hidden.type = "hidden";
+                    hidden.name = param;
+                    hidden.value = paramValue;
+                    form.appendChild(hidden);
+                }
+            </script>
         </x-widget>
     </div>
 

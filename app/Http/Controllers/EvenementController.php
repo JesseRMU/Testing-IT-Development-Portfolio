@@ -20,7 +20,7 @@ class EvenementController extends Controller
     public function index()
     {
         // Haal de evenementen op uit de database
-        $evenementen = self::applyFilters( Evenement::with(['wachthaven', 'steiger']) )->paginate(25)->withQueryString();
+        $evenementen = self::applyFilters(Evenement::with(['wachthaven', 'steiger']))->paginate(25)->withQueryString();
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }
@@ -160,9 +160,10 @@ class EvenementController extends Controller
      * @param $query Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      */
-    public static function applyFilters($query){
+    public static function applyFilters($query)
+    {
         // zo nodig een inner join doen op wachthavens, zodat we kunnen filteren op object_id
-        if(!is_null(request("object_id"))){
+        if (!is_null(request("object_id"))) {
             $query = $query->join("wachthavens", "evenementen.wachthaven_id", "=", "wachthavens.wachthaven_id");
         }
         $request = request();
@@ -189,7 +190,7 @@ class EvenementController extends Controller
             "schip_containers",
             "schip_containers_type"
         ];
-        foreach ($checkbox as $name){
+        foreach ($checkbox as $name) {
             $query = self::applyCheckboxFilter($query, $name);
         }
         $nummer = [
@@ -200,7 +201,7 @@ class EvenementController extends Controller
             "schip_containers_aantal",
             "schip_containers_teus"
         ];
-        foreach ($nummer as $name){
+        foreach ($nummer as $name) {
             $query = self::applyNumberFilter($query, $name);
         }
 
@@ -217,12 +218,13 @@ class EvenementController extends Controller
      * @param $table string
      * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      */
-    public static function applyCheckboxFilter($query, $name, $table = "evenementen"){
+    public static function applyCheckboxFilter($query, $name, $table = "evenementen")
+    {
         $values = request($name);
-        if(isset($values) && is_array($values)){
+        if (isset($values) && is_array($values)) {
             $query = $query->where(function ($iquery) use ($values, $name, $table) {
                 foreach ($values as $value) {
-                    if($value == "null") {
+                    if ($value == "null") {
                         $value = null;
                     }
                     $iquery = $iquery->orWhere($table.'.'.$name, $value);
@@ -239,12 +241,13 @@ class EvenementController extends Controller
      * @param $table string
      * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      */
-    public static function applyNumberFilter($query, $name, $table = "evenementen"){
+    public static function applyNumberFilter($query, $name, $table = "evenementen")
+    {
         $values = request($name);
-        if(isset($values) && !array_key_exists("min", $values)){
+        if (isset($values) && !array_key_exists("min", $values)) {
             $query = $query->where($table.'.'.$name, ">=", $values["min"]);
         }
-        if(isset($values) && !array_key_exists("max", $values)){
+        if (isset($values) && !array_key_exists("max", $values)) {
             $query = $query->where($table.'.'.$name, "<=", $values["max"]);
         }
         return $query;

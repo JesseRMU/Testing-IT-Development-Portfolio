@@ -38,7 +38,8 @@ class WaarschuwingService
         foreach ($evenementenPerDag as $datum => $perWachthaven) {
             foreach ($perWachthaven as $wachthavenId => $items) {
                 $aantalSteigers = $steigeraantalperlocatie->get($wachthavenId, 0);
-                if ($items->count() > $aantalSteigers && round(($items->count() / max($aantalSteigers, 1)) * 100) > 1000) {
+                if ( $items->count() > $aantalSteigers
+                    && round(($items->count() / max($aantalSteigers, 1)) * 100) > 1000 ) {
                     $waarschuwingen->push([
                         'locatie' => $wachthavens[$wachthavenId]['wachthaven_naam'] ?? 'Onbekend',
                         'datum' => $datum,

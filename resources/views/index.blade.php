@@ -25,7 +25,7 @@ catch (Exception $e) {
     </div>
     @endif
     <div class="flex flex-row gap-5 flex-wrap">
-        <x-widget title="Totaal Ligplaatsen Jaar" bottomText="+20% meer dan 2024" small>
+        <!--<x-widget title="Totaal Ligplaatsen Jaar" bottomText="+20% meer dan 2024" small>
             <p class="text-3xl font-semibold">16,928</p>
         </x-widget>
         <x-widget title="Totaal Ligplaatsen Maand" bottomText="+33% meer dan Februari" small>
@@ -33,10 +33,10 @@ catch (Exception $e) {
         </x-widget>
         <x-widget title="Hoi" small>
             <p>Dit is de inhoud van een widget, neem ik aan.</p>
-        </x-widget>
+        </x-widget>-->
 
         <!-- Nieuwe Dropdown Widget -->
-        <x-widget title="Groeperen op tijd" small>
+        <x-widget title="Groeperen op tijd">
             <form method="POST" action="{{ route('chart.groupByTime') }}">
                 @csrf
                 <label for="timeGrouping" class="block mb-2 font-semibold">Opties:</label>
@@ -55,6 +55,11 @@ catch (Exception $e) {
     </div>
 
     <x-widget title="Testgrafiek met Graph.js">
+        <x-slot name="menuItems">
+            <li id="exportChartPNG" tabindex="0">Exporteer naar png</li>
+            <li id="exportChartJPG" tabindex="0">Exporteer naar jpg</li>
+            <li id="exportChartPDF" tabindex="0">Exporteer naar pdf</li>
+        </x-slot>
         <div>
             <canvas id="myChart"></canvas>
         </div>

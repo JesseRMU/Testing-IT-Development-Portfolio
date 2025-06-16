@@ -1,5 +1,5 @@
 <x-main>
-    <form id="filters" method="GET" action="{{ route('evenementen.index') }}" class="flex gap-6 items-start" style="max-width: 100%;">
+    <form id="filters" method="GET" action="{{ route('evenementen.index') }}" class="flex gap-6 items-start max-w-full">
 
         <x-widget title="Filteren op veld" class="w-[400px] overflow-visible">
             <div>

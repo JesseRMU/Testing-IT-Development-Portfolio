@@ -58,7 +58,6 @@ catch (Exception $e) {
                 let url = form.action;
 
                 let index = url.indexOf("?");
-                let action = url.slice(0, index)
                 let params = url.slice(index);
                 url = new URLSearchParams(params);
                 for (const param of url.keys()){

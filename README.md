@@ -67,7 +67,73 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 # User stories
 
+## User story User story 7 – Grafiek exporteren naar afbeelding
+#### Gemaakt door: Korben de vos
+
+Als adviseur bij Rijkswaterstaat moet ik al mijn beslissingen verantwoorden doormiddel van data, daarom is het belangrijk dat ik mijn visuele inzichten kan download als afbeelding. Bestanden waar ik veel gebruik van maak zijn: png, pdf, jpg en svg (Zie appendix 2). Deze moeten dus zeker aanwezig zijn.
+
+### Acceptance Criteria 
+
+#### Main Flow 
+- Given: De adviseur maakt gebruik van het dashboard en ziet een bruikbare grafiek die hij wil gebruiken in zijn presentatie. 
+- When: Rechtsboven van de grafiek drukt hij op het download icoontje. Hij kiest het bestands type 
+- Then: Download hij de grafiek als gekozen bestand. 
+
+#### Alternate Flow 
+
+
+#### Exception Flow 
+- Given: De adviseur maakt gebruik van het dashboard en ziet een bruikbare grafiek die hij wil gebruiken in zijn presentatie. 
+- When Rechtsboven van de grafiek drukt hij op het download icoontje. Hij kiest het bestands type. Hij heeft geen opslagruimte meer. 
+- Then: Hij krijgt een melding dat zijn opslag vol is en dat de download geannuleerd is. 
+
+### Testplan
+- Test of de exporteer opties gerendered worden in de grafiek widget (unit) - als dit niet werkt kan de gebruiker niet exporteren.
+-- Given: Een windget met de titel "Testgrafiek met Graph.js" is gerendered
+-- When: De opties van de bijbehoordende widget is uitgeklapt
+-- Then: De opties zijn zichtbaar voor png, pdf, jpg, en svg.
+
+- Test of de exporteer opties gerendered worden in niet-grafiek widgets (unit) - als het fout gaat is er meer clutter en kunnen er errors ontstaan als er op gedrukt wordt.
+-- Given: Een widget met een andere titel dan "Testgrafiek met Graph.js" wordt weergegeven
+-- When: De opties van de bijbehoordende widget is uitgeklapt
+-- Then: De opties voor png, pdf, jpg, en svg zijn niet zichtbaar.
+
+- Test of de grafieken data van de database kan gebruiken met geldige group_by_time paramenter (feature) - anders zijn de grafieken leeg of kunnen er errors ontstaan.
+-- Given: Een geldige group_by_time parameter wordt opgestuurd.
+-- When: Het endpoint van de grafiekgegevens wordt opgeroepen.
+-- Then: Het geeft de response data terug met de juiste structuur, inclusief labels en datasets.
+
+- Test of er een foutmelding getoond wordt met foute data (feature) - anders is de data fout ofkunnen er errors ontstaan.
+-- Given: Er wordt een ongeldige group_by_time parameter meegegeven in een request
+-- When: De grafiek-data endpoint wordt aangeroepen
+-- Then: Het Ggeft de response een 422 error terug
+
+- ~~Test of het juiste gedownload wordt (voor iedere optie) (feature) - om te kijken of het downloaden zelf werkt~~ is niet mogelijk met laravel testing
+-- ~~Given: Er is een grafiek gerendered.~~
+-- ~~When: De gebruiker druk op een export optie~~
+-- ~~Then: Een bestand wordt gedownload~~
+
+#### Test resultaten
+![Test resultaten](/resources/images/tests/GraphExortBladeTest.PNG "Task tests")
+![Test resultaten](/resources/images/tests/GraphDataTest.PNG "Task tests")
+
+### Evaluatie
+Met deze tests kunnen we snel zien of de export opties werken en niet gerenderd worden bij andere widgets.
+Ook weten we of het een foutmelding geeft als de grafiek foute data heeft, en dat het niets doet als het correct is.
+The laatste test kon niet gemaakt worden omdat dat op browser niveau is, en dus niet door laravel getest kan worden.
+Ook kan er niet met svg gewerkt worden, de browser is een canvas en daardoor kan svg niet. 
+Het kan daardoor ook niet testen wat er gebeurd als de opslag vol zit, maar de browser stopt de download dan toch.
+Ook kan er zo niet door de inhoud van de afbeeldingen zelf gekeken worden.
+We kunnen uit deze tests dus wel de frontend opties testen, en of het genereren van de grafiek zelf naar behoren werkt.
+
+### Conclusie en Acties
+- Er waren nog wat fouten voor SQLite, deze zijn verwerkt:
+- FIELD uit EvenementController gehaald voor SQLite en testing
+- "day" uit validatie in GraphController gehaald voor SQLite en testing
+- Deze tests hebben de kwaliteit van de code verbeterd en wordt automatisch gedraaid wanneer het gepushed, en verzekerd daarmee toekomstige kwaliteit.
+
 ## User story User story 9 – Meldingen hoog ligplaatsgebruik 
+#### Gemaakt door: Korben de vos
 
 Als data-analist wil ik op de hoogte gebracht worden als het ligplaatsgebruik van een object heel hoog is zodat ik snel zie bij welke objecten het vaak heel druk is. Dit moet voor iedere dag getoond worden waar de ligplaatsbezetting boven het percentage is. Het percentage wordt later bepaald. 
 
@@ -80,23 +146,41 @@ Als data-analist wil ik op de hoogte gebracht worden als het ligplaatsgebruik va
 - Then: De data-analist drukt op de melding voor meer details. 
 
 #### Alternate Flow 
+
+#### Exception Flow 
 - Given: De data-analist is op het dashboard. 
 - When: Er is nergens hoog ligplaatsgebruik. 
 - Then: Er wordt geen melding weergegeven. 
 
-#### Exception Flow 
-- Given: De data-analist is op het dashboard. 
-- When: Er is een fout bij het ophalen van de data. 
-- Then: Het dashboard geeft een foutmelding en er zijn geen meldingen getoond.
-
 ### Testplan
-- toon waarschuwingen wanneer er meer evenementen dan steigers zijn systeem op code level (unit)
-- toon geen waarschuwingen wanneer er minder evenementen dan steigers zijn op code level (unit)
-- toon waarschuwingen wanneer er meer evenementen dan steigers zijn met factories en database (feature)
-- toon geen waarschuwingen wanneer er minder evenementen dan steigers zijn met factories en database (feature)
+- Toon waarschuwingen wanneer er meer evenementen dan steigers zijn systeem op code level (unit) - om te zien of de service werkt en waarschuwingen laat zien
+-- Given: Er zijn meer evenementen dan steigers op een dag bij een wachthaven
+-- When: De gebruiker is op het dashboard pagina
+-- Then: Er worden waarschuwingen getoond
 
-#### Github test resultaten
-![Github test resultaten](/resources/images/tests/github1.PNG "Github task tests")
+- Toon geen waarschuwingen wanneer er minder evenementen dan steigers zijn op code level (unit) - om te zien of de service werkt en gana waarschuwingen laat zien
+-- Given: Er zijn minder evenementen dan steigers op een dag bij een wachthaven
+-- When: De gebruiker is op het dashboard pagina
+-- Then: Er worden geen waarschuwingen getoond
+
+- Toon waarschuwingen wanneer er meer evenementen dan steigers zijn met factories en database (feature) - om te zien of alle lagen werken en er waarschuwingen worden getoont
+-- Given: Er zijn meer evenementen dan steigers op een dag bij een wachthaven in de database
+-- When: De gebruiker is op het dashboard pagina
+-- Then: Er worden waarschuwingen getoond
+
+- Toon geen waarschuwingen wanneer er minder evenementen dan steigers zijn met factories en database (feature) - om te zien of alle lagen werken en er geen waarschuwingen worden getoont
+-- Given: Er zijn minder evenementen dan steigers op een dag bij een wachthaven in de database
+-- When: De gebruiker is op het dashboard pagina
+-- Then: Er worden geen waarschuwingen getoond
+
+- ~~Test of de waarschuwingen gerenderd worden - om te zien of de waarschuwing überhaubt tevoorschijn komen~~ Sinds een gedeelte toch niet getest kan worden (meer details tonen met js) en het belangrijkste al gedekt wordt door eerdere tests is deze gelaten
+-- ~~Given: Er zijn meer evenementen dan steigers op een dag bij een wachthaven~~
+-- ~~When: De gebruiker is op het dashboard pagina~~
+-- ~~Then: Er worden waarschuwingen getoond~~
+
+#### Test resultaten
+![Test resultaten](/resources/images/tests/WarningServiceTest.PNG "Task tests")
+![Test resultaten](/resources/images/tests/GetWarningsTest.PNG "Task tests")
 
 ### Evaluatie
 Deze test kijken of de logica van de code goed werkt.
@@ -104,6 +188,9 @@ Denk hierbij van het verwerken van data en het genereren van waarschuwingen.
 Mocht er een fout zijn bij het generen van waarschuwingen pakken deze tests dat op.
 Bijvoorbeeld als er wat mis gaat op het database niveau, data verwerkings niveau, of waarschuwing genereer niveau.
 Deze tests testen alleen de logica, met en zonder database.
-Het kan niet zien of de waarschuwingen daadwerkelijk goed op de pagina('s) getoond worden.
 Je kan dus wel met deze tests zien het waarschuwingssysteem werkt, maar voor de front-end met iemand er zelf naar kijken.
 
+### Conclusie en Acties
+- De code is deels opgesplit naar een service, wat het meer overzichtbaar maakt.
+- Factories zijn toegevoegd
+- Deze tests hebben de kwaliteit van de code verbeterd en wordt automatisch gedraaid wanneer het gepushed, en verzekerd daarmee toekomstige kwaliteit.

@@ -20,7 +20,9 @@ class EvenementController extends Controller
     public function index()
     {
         // Haal de evenementen op uit de database
-        $evenementen = self::applyFilters(Evenement::with(['wachthaven', 'steiger']))->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur") ])->paginate(25)->withQueryString();
+        $evenementen = self::applyFilters(Evenement::with(['wachthaven', 'steiger']))
+        ->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur") ])
+        ->paginate(25)->withQueryString();
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }
@@ -101,31 +103,31 @@ class EvenementController extends Controller
     {
         // Bouw de juiste kolom op basis van de tijdsgroepen
         $groupColumn = match ($timeGrouping) {
-        'day_of_week' => DB::raw('DAYNAME(evenement_begin_datum) AS label'),
-        'hour_of_day' => DB::raw('HOUR(evenement_begin_datum) AS label'),
-        'week_of_year' => DB::raw('WEEK(evenement_begin_datum) AS label'),
-        'month_of_year' => DB::raw('MONTHNAME(evenement_begin_datum) AS label'),
-        default => DB::raw('DATE(evenement_begin_datum) AS label') // Default: per datum
-    };
+            'day_of_week' => DB::raw('DAYNAME(evenement_begin_datum) AS label'),
+            'hour_of_day' => DB::raw('HOUR(evenement_begin_datum) AS label'),
+            'week_of_year' => DB::raw('WEEK(evenement_begin_datum) AS label'),
+            'month_of_year' => DB::raw('MONTHNAME(evenement_begin_datum) AS label'),
+            default => DB::raw('DATE(evenement_begin_datum) AS label') // Default: per datum
+        };
 
-    $data = Self::applyFilters(DB::table('evenementen'))
-        ->select($groupColumn, DB::raw('COUNT(*) AS total'))
-        ->groupBy('label')
-        ->get();
+        $data = self::applyFilters(DB::table('evenementen'))
+            ->select($groupColumn, DB::raw('COUNT(*) AS total'))
+            ->groupBy('label')
+            ->get();
 
-    $labels = $data->pluck('label')->toArray();
-    $values = $data->pluck('total')->toArray();
+        $labels = $data->pluck('label')->toArray();
+        $values = $data->pluck('total')->toArray();
 
-    // If grouping by day_of_week, sort manually for SQLite
-    if ($timeGrouping === 'day_of_week') {
-        $order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        $sorted = collect($data)->sortBy(function ($item) use ($order) {
-            return array_search($item->label, $order);
-        })->values();
+        // If grouping by day_of_week, sort manually for SQLite
+        if ($timeGrouping === 'day_of_week') {
+            $order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            $sorted = collect($data)->sortBy(function ($item) use ($order) {
+                return array_search($item->label, $order);
+            })->values();
 
-        $labels = $sorted->pluck('label')->toArray();
-        $values = $sorted->pluck('total')->toArray();
-    }
+            $labels = $sorted->pluck('label')->toArray();
+            $values = $sorted->pluck('total')->toArray();
+        }
 
         return [
             'labels' => $labels,

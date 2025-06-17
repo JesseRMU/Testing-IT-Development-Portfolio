@@ -6,6 +6,7 @@ catch (Exception $e) {
     $waarschuwingen = null;
     //negeer de error en zet de waarschuwingen op null
 }
+$aantalEvenementen = EvenementController::applyFilters( DB::table("evenementen") )->select(DB::raw("COUNT(*) as count"))->first()->count;
 ?>
 
 <x-main>
@@ -27,7 +28,11 @@ catch (Exception $e) {
     @endif
     <div class="flex flex-row gap-5 flex-wrap">
         <x-widget title="Totaal Evenementen Geselecteerd" bottomText="">
-            <p class="text-3xl font-semibold">{{ EvenementController::applyFilters( DB::table("evenementen") )->select(DB::raw("COUNT(*) as count"))->first()->count }}</p>
+            @if($aantalEvenementen > 0)
+                <p class="text-3xl font-semibold">{{ $aantalEvenementen }}</p>
+            @else
+                <p class="text-3xl font-semibold">Geen gegevens geselecteerd</p>
+            @endif
         </x-widget><!--
         <x-widget title="Totaal Ligplaatsen Maand" bottomText="+33% meer dan Februari" small>
             <p class="text-3xl font-semibold">4,405</p>

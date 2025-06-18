@@ -246,10 +246,10 @@ class EvenementController extends Controller
     public static function applyNumberFilter($query, $name, $table = "evenementen")
     {
         $values = request($name);
-        if (isset($values) && !array_key_exists("min", $values)) {
+        if (isset($values) && array_key_exists("min", $values) && is_numeric($values["min"])) {
             $query = $query->where($table.'.'.$name, ">=", $values["min"]);
         }
-        if (isset($values) && !array_key_exists("max", $values)) {
+        if (isset($values) && array_key_exists("max", $values) && is_numeric($values["max"])) {
             $query = $query->where($table.'.'.$name, "<=", $values["max"]);
         }
         return $query;

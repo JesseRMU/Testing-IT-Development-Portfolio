@@ -20,4 +20,6 @@ Route::get("/filters", function () {
 Route::get('/heatmap', [HeatmapController::class, 'index'])->name("heatmap");
 
 // Route voor het herschikken van grafiekdata
+Route::delete('/evenementen/{id}', [EvenementController::class, 'destroy'])->name('evenementen.destroy');
+
 Route::get('/chart/groupByTime', [EvenementController::class, 'groupByTime'])->name('chart.groupByTime');

@@ -70,9 +70,20 @@ class EvenementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Evenement $evenement)
+    public function destroy($id)
     {
-        //
+        try {
+            $evenement = Evenement::findOrFail($id);
+
+            // Verwijder het evenement
+            $evenement->delete();
+
+            \Log::info('Evenement met ID ' . $id . ' succesvol verwijderd.');
+            return redirect()->route('evenementen.index')->with('success', 'Gegevens succesvol verwijderd.');
+        } catch (\Exception $e) {
+            \Log::error('Fout bij verwijderen: ' . $e->getMessage());
+            return back()->with('error', 'Het verwijderen is mislukt: ' . $e->getMessage());
+        }
     }
 
     /**

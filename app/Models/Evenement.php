@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Evenement extends Model
 {
-    /** @use HasFactory<\Database\Factories\EvenementFactory> */
     use HasFactory;
+
     public $timestamps = false;
 
     protected $table = 'evenementen';
+
+
+    // Define the correct primary key for the evenementen table
+    protected $primaryKey = 'evenement_id';
+
 
     /**
      * @return HasOne
@@ -21,6 +26,8 @@ class Evenement extends Model
     {
         return $this->hasOne(Steiger::class, "steiger_id", "steiger_id");
     }
+
+
 
     /**
      * @return HasOne

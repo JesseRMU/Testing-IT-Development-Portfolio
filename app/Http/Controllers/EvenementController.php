@@ -20,7 +20,9 @@ class EvenementController extends Controller
     public function index()
     {
         // Haal de evenementen op uit de database
-        $evenementen = self::applyFilters( Evenement::with(['wachthaven', 'steiger']) )->paginate(25)->withQueryString();
+        $evenementen = self::applyFilters(Evenement::with(['wachthaven', 'steiger']))
+        ->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur") ])
+        ->paginate(25)->withQueryString();
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
     }
@@ -112,31 +114,31 @@ class EvenementController extends Controller
     {
         // Bouw de juiste kolom op basis van de tijdsgroepen
         $groupColumn = match ($timeGrouping) {
-        'day_of_week' => DB::raw('DAYNAME(evenement_begin_datum) AS label'),
-        'hour_of_day' => DB::raw('HOUR(evenement_begin_datum) AS label'),
-        'week_of_year' => DB::raw('WEEK(evenement_begin_datum) AS label'),
-        'month_of_year' => DB::raw('MONTHNAME(evenement_begin_datum) AS label'),
-        default => DB::raw('DATE(evenement_begin_datum) AS label') // Default: per datum
-    };
+            'day_of_week' => DB::raw('DAYNAME(evenement_begin_datum) AS label'),
+            'hour_of_day' => DB::raw('HOUR(evenement_begin_datum) AS label'),
+            'week_of_year' => DB::raw('WEEK(evenement_begin_datum) AS label'),
+            'month_of_year' => DB::raw('MONTHNAME(evenement_begin_datum) AS label'),
+            default => DB::raw('DATE(evenement_begin_datum) AS label') // Default: per datum
+        };
 
-    $data = DB::table('evenementen')
-        ->select($groupColumn, DB::raw('COUNT(*) AS total'))
-        ->groupBy('label')
-        ->get();
+        $data = self::applyFilters(DB::table('evenementen'))
+            ->select($groupColumn, DB::raw('COUNT(*) AS total'))
+            ->groupBy('label')
+            ->get();
 
-    $labels = $data->pluck('label')->toArray();
-    $values = $data->pluck('total')->toArray();
+        $labels = $data->pluck('label')->toArray();
+        $values = $data->pluck('total')->toArray();
 
-    // If grouping by day_of_week, sort manually for SQLite
-    if ($timeGrouping === 'day_of_week') {
-        $order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        $sorted = collect($data)->sortBy(function ($item) use ($order) {
-            return array_search($item->label, $order);
-        })->values();
+        // If grouping by day_of_week, sort manually for SQLite
+        if ($timeGrouping === 'day_of_week') {
+            $order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            $sorted = collect($data)->sortBy(function ($item) use ($order) {
+                return array_search($item->label, $order);
+            })->values();
 
-        $labels = $sorted->pluck('label')->toArray();
-        $values = $sorted->pluck('total')->toArray();
-    }
+            $labels = $sorted->pluck('label')->toArray();
+            $values = $sorted->pluck('total')->toArray();
+        }
 
         return [
             'labels' => $labels,
@@ -171,9 +173,10 @@ class EvenementController extends Controller
      * @param $query Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      */
-    public static function applyFilters($query){
+    public static function applyFilters($query)
+    {
         // zo nodig een inner join doen op wachthavens, zodat we kunnen filteren op object_id
-        if(!is_null(request("object_id"))){
+        if (!is_null(request("object_id"))) {
             $query = $query->join("wachthavens", "evenementen.wachthaven_id", "=", "wachthavens.wachthaven_id");
         }
         $request = request();
@@ -198,10 +201,9 @@ class EvenementController extends Controller
             "schip_lading_seinvoering_kegel",
             "schip_avv_klasse",
             "schip_containers",
-            "schip_containers_type",
-            "schip_containers_teus"
+            "schip_containers_type"
         ];
-        foreach ($checkbox as $name){
+        foreach ($checkbox as $name) {
             $query = self::applyCheckboxFilter($query, $name);
         }
         $nummer = [
@@ -209,9 +211,10 @@ class EvenementController extends Controller
             "lengte",
             "breedte",
             "diepgang",
-            "schip_containers_aantal"
+            "schip_containers_aantal",
+            "schip_containers_teus"
         ];
-        foreach ($nummer as $name){
+        foreach ($nummer as $name) {
             $query = self::applyNumberFilter($query, $name);
         }
 
@@ -228,12 +231,13 @@ class EvenementController extends Controller
      * @param $table string
      * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      */
-    public static function applyCheckboxFilter($query, $name, $table = "evenementen"){
+    public static function applyCheckboxFilter($query, $name, $table = "evenementen")
+    {
         $values = request($name);
-        if(isset($values) && is_array($values)){
+        if (isset($values) && is_array($values)) {
             $query = $query->where(function ($iquery) use ($values, $name, $table) {
                 foreach ($values as $value) {
-                    if($value == "null") {
+                    if ($value == "null") {
                         $value = null;
                     }
                     $iquery = $iquery->orWhere($table.'.'.$name, $value);
@@ -250,12 +254,13 @@ class EvenementController extends Controller
      * @param $table string
      * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
      */
-    public static function applyNumberFilter($query, $name, $table = "evenementen"){
+    public static function applyNumberFilter($query, $name, $table = "evenementen")
+    {
         $values = request($name);
-        if(isset($values) && !is_null($values["min"])){
+        if (isset($values) && array_key_exists("min", $values) && is_numeric($values["min"])) {
             $query = $query->where($table.'.'.$name, ">=", $values["min"]);
         }
-        if(isset($values) && !is_null($values["max"])){
+        if (isset($values) && array_key_exists("max", $values) && is_numeric($values["max"])) {
             $query = $query->where($table.'.'.$name, "<=", $values["max"]);
         }
         return $query;

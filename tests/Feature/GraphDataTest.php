@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GraphDataTest extends TestCase
@@ -13,6 +14,8 @@ class GraphDataTest extends TestCase
         parent::setUp();
         $this->artisan('migrate');
     }
+
+    use RefreshDatabase;
 
     /** @test */
     // Kijk of de grafieken data van de database kan gebruiken

@@ -4,11 +4,13 @@ namespace Tests\Unit;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GraphExportBladeTest extends TestCase
 {
     use InteractsWithViews;
+    use RefreshDatabase;
 
     /** @test */
     // Test of de exporteer opties gerendered worden in de grafiek widget

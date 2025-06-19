@@ -3,11 +3,15 @@
 namespace Tests\Unit;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Services\WaarschuwingService;
 
 class WarningsServiceTest extends TestCase
 {
+
+    use RefreshDatabase;
+
     /** @test */
     // Test om te controleren of waarschuwingen worden weergegeven wanneer er
     // meer evenementen zijn dan steigers - met dummy data

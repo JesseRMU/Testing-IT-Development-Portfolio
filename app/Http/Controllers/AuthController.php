@@ -9,11 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|object
+     * showing the login form
+     */
     public function showLoginForm()
     {
         return view('login');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * makes you able to log in so that you can access the rest of the website
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -26,6 +35,11 @@ class AuthController extends Controller
         return back()->with('error', 'Invalid credentials.');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|object
+     * makes you able to log out of your session
+     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -36,12 +50,20 @@ class AuthController extends Controller
         return redirect('/login');
     }
 
-
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|object
+     * shows a form so that you can make user accounts
+     */
     public function showRegisterForm()
     {
         return view('register');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|object
+     * the logic behind the register form above
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -60,5 +82,4 @@ class AuthController extends Controller
 
         return redirect('/');
     }
-
 }

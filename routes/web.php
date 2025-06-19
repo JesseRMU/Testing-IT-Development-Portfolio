@@ -21,3 +21,4 @@ Route::get('/heatmap', [HeatmapController::class, 'index'])->name("heatmap");
 
 // Route voor het herschikken van grafiekdata
 Route::post('/chart/groupByTime', [EvenementController::class, 'groupByTime'])->name('chart.groupByTime');
+Route::delete('/evenementen/{id}', [EvenementController::class, 'destroy'])->name('evenementen.destroy');

@@ -44,7 +44,6 @@ $aantalEvenementen = EvenementController::applyFilters( DB::table("evenementen")
         <!-- Nieuwe Dropdown Widget -->
         <x-widget title="Groeperen op tijd">
             <form method="get" action="{{ route('chart.groupByTime') }}?{{ request()->getQueryString() }}" id="groepeer">
-                @csrf
                 <label for="timeGrouping" class="block mb-2 font-semibold">Opties:</label>
                 <select id="timeGrouping" name="timeGrouping" class="border-gray-300 rounded p-2 w-full">
                     <option disabled selected>Kies een optie</option>
@@ -66,12 +65,14 @@ $aantalEvenementen = EvenementController::applyFilters( DB::table("evenementen")
                 let params = url.slice(index);
                 url = new URLSearchParams(params);
                 for (const param of url.keys()){
-                    let paramValue = url.get(param);
-                    let hidden = document.createElement("INPUT");
-                    hidden.type = "hidden";
-                    hidden.name = param;
-                    hidden.value = paramValue;
-                    form.appendChild(hidden);
+                    if(param !== "timeGrouping"){
+                        let paramValue = url.get(param);
+                        let hidden = document.createElement("INPUT");
+                        hidden.type = "hidden";
+                        hidden.name = param;
+                        hidden.value = paramValue;
+                        form.appendChild(hidden);
+                    }
                 }
             </script>
         </x-widget>

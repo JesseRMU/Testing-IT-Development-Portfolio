@@ -14,7 +14,7 @@ class Evenement extends Model
 
     protected $table = 'evenementen';
 
-     us6-verwijderen-foute-data
+
     // Define the correct primary key for the evenementen table
     protected $primaryKey = 'evenement_id';
 
@@ -22,18 +22,16 @@ class Evenement extends Model
     /**
      * @return HasOne
      */
-      main
     public function steiger(): HasOne
     {
         return $this->hasOne(Steiger::class, "steiger_id", "steiger_id");
     }
 
- us6-verwijderen-foute-data
+
 
     /**
      * @return HasOne
      */
-    main
     public function wachthaven(): HasOne
     {
         return $this->hasOne(Wachthaven::class, "wachthaven_id", "wachthaven_id");

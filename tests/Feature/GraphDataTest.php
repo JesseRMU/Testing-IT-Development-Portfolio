@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GraphDataTest extends TestCase
@@ -13,12 +15,14 @@ class GraphDataTest extends TestCase
         $this->artisan('migrate');
     }
 
+    use RefreshDatabase;
+
     /** @test */
     // Kijk of de grafieken data van de database kan gebruiken
     public function graph_heeft_juiste_data_structuur()
     {
-        // Geen arrange nodig
-
+        // Arrange
+        $this->actingAs(User::factory()->create());
         // Vraag de grafiek data op met een geldige group_by_time parameter
         $response = $this->getJson('/graphs?group_by_time=day');
 

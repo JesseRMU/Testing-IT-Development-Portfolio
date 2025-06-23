@@ -11,6 +11,7 @@ use App\Models\Wachthaven;
 use App\Models\Steiger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EvenementController extends Controller
 {
@@ -255,19 +256,34 @@ class EvenementController extends Controller
      * @param string $column
      * @return mixed
      */
+
+
     public static function applyDateFilter($query, string $column = 'evenement_begin_datum')
     {
         $from = request('startDate');
         $to = request('endDate');
+        $fromTime = request('startTime');
+        $toTime = request('endTime');
 
-        if ($from) {
+        if ($from && $fromTime) {
+            $start = Carbon::parse("$from $fromTime");
+            $query = $query->where($column, '>=', $start);
+        } elseif ($from) {
             $query = $query->whereDate($column, '>=', $from);
         }
 
-        if ($to) {
+        if ($to && $toTime) {
+            $end = Carbon::parse("$to $toTime");
+            $query = $query->where($column, '<=', $end);
+        } elseif ($to) {
             $query = $query->whereDate($column, '<=', $to);
+        }
+
+        if ($weekday = request('weekday')) {
+            $query = $query->whereRaw("WEEKDAY($column) = ?", [$weekday]);
         }
 
         return $query;
     }
+
 }

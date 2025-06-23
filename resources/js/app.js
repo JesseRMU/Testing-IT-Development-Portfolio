@@ -9,3 +9,17 @@ flatpickr("#startDate", {
     plugins: [new rangePlugin({ input: "#endDate" })],
     dateFormat: "Y-m-d",
 });
+
+flatpickr("#startTime", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true,
+});
+
+flatpickr("#endTime", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true,
+});

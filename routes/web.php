@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExcelUpload;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\GraphController;
+use App\Http\Controllers\DataValidationController;
 
 Route::get('/', function () {
     return view('index');
@@ -23,3 +24,5 @@ Route::get('/heatmap', [HeatmapController::class, 'index'])->name("heatmap");
 Route::delete('/evenementen/{id}', [EvenementController::class, 'destroy'])->name('evenementen.destroy');
 
 Route::get('/chart/groupByTime', [EvenementController::class, 'groupByTime'])->name('chart.groupByTime');
+
+Route::get('/validate-data', [DataValidationController::class, 'validateData'])->name('validate-data');

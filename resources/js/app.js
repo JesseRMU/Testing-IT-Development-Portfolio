@@ -13,36 +13,24 @@ document.addEventListener('DOMContentLoaded', () => {
         plugins: [new rangePlugin({ input: "#endDate" })],
         dateFormat: "Y-m-d",
         mode: "range",
-        // Disable alle datums die niet in occupiedDates zitten
-        disable: [
-            function(date) {
-                const d = date.toISOString().slice(0, 10);
-                return !occupiedDates.includes(d);
+
+        onDayCreate: function(dObj, dStr, fp, dayElem) {
+            const date = dayElem.dateObj.toISOString().slice(0, 10);
+            if (!occupiedDates.includes(date)) {
+                dayElem.classList.add("unavailable-date");
             }
-        ],
-        // Haal bij checken van kalender datums op uit api
-        onOpen: function(selectedDates, dateStr, instance) {
+        },
+
+        // Als kalender geopend word, maakt alle datums zonder data grijs
+        onOpen: function(_, __, instance) {
             const form = document.getElementById('filters');
             const formData = new FormData(form);
             const params = new URLSearchParams(formData);
 
-            const start = instance.config.minDate;
-            const end = instance.config.maxDate;
-
-            params.set('start', start);
-            params.set('end', end);
-
-            // Fetch beschikbare datums van de server
             fetch(`/api/evenementen/dates?${params.toString()}`)
                 .then(res => res.json())
                 .then(data => {
                     occupiedDates = data;
-                    instance.set('disable', [
-                        function(date) {
-                            const d = date.toISOString().slice(0, 10);
-                            return !occupiedDates.includes(d);
-                        }
-                    ]);
                     instance.redraw();
                 });
         }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Evenement;
@@ -22,6 +23,9 @@ class GetWarningsTest extends TestCase
 
         // Maak wachthaven aan
         $wachthaven = Wachthaven::factory()->create(['wachthaven_id' => 1]);
+
+        // maak een user account aan
+        $this->actingAs(User::factory()->create());
 
         // Maak steigers aan
         Steiger::factory()->count(2)->create([
@@ -44,6 +48,14 @@ class GetWarningsTest extends TestCase
         $this->assertEquals(4, $warnings->first()['evenementen']);
         $this->assertEquals(2, $warnings->first()['steigers']);
         $this->assertEquals(200, $warnings->first()['percentage']);
+
+        $view = $this->blade(
+            '<x-widget title="Testgrafiek met Graph.js">Test Content</x-widget>'
+        );
+
+        $view->assertSee('id="exportChartPNG"', false);
+        $view->assertSee('id="exportChartJPG"', false);
+        $view->assertSee('id="exportChartPDF"', false);
     }
 
     /** @test */

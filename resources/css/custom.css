@@ -205,4 +205,12 @@ th {
     100% {
         transform: rotate(360deg);
     }
+
+
 }
+
+.unavailable-date {
+    color: rgba(170, 170, 170, 0.4) !important; /* lichtgrijs + transparant */
+    pointer-events: all; /* laat de datum klikbaar blijven */
+}
+

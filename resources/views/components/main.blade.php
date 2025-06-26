@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
         <title>Ligplaatsbezettingsdashboard</title>
 
@@ -16,11 +17,22 @@
         @endif
     </head>
     <body class="bg-[var(--achtergrond)] text-[#1b1b18]">
-        <header class="w-full mb-6 flex gap-10 h-16 items-center border-b-1 border-b-gray-200">
-            <div class="flex flex-initial font-semibold text-xl pl-5">Dashboard Ligplaatsbezetting IVS Next</div>
-            <div class="flex flex-initial">
-            </div>
-        </header>
+    <header class="w-full mb-6 flex justify-between items-center h-16 px-5 border-b border-b-gray-200">
+        <div class="font-semibold text-xl">Dashboard Ligplaatsbezetting IVS Next</div>
+        <div class="flex items-center gap-4">
+            @auth
+                <span class="text-gray-700 text-sm">Ingelogd als <strong>{{ Auth::user()->name }}</strong></span>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 rounded text-sm">
+                        Log uit
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-blue-600 hover:underline text-sm">Log in</a>
+            @endauth
+        </div>
+    </header>
         <main class="flex flex-auto px-5 flex-col gap-5">
             <div class="flex w-full">
                 <nav class="flex text-sm overflow-hidden items-center gap-2 bg-[#ededec] flex-initial h-10 px-2 rounded-md" id="links">

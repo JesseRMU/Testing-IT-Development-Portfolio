@@ -1,10 +1,12 @@
 <?php
 use App\Http\Controllers\EvenementController;
+use Illuminate\Support\Facades\DB;
 try {$waarschuwingen = EvenementController::getWarnings();}
 catch (Exception $e) {
     $waarschuwingen = null;
     //negeer de error en zet de waarschuwingen op null
 }
+$aantalEvenementen = EvenementController::applyFilters( DB::table("evenementen") )->select(DB::raw("COUNT(*) as count"))->first()->count;
 ?>
 
 <x-main>
@@ -25,19 +27,23 @@ catch (Exception $e) {
     </div>
     @endif
     <div class="flex flex-row gap-5 flex-wrap">
-        <x-widget title="Totaal Ligplaatsen Jaar" bottomText="+20% meer dan 2024" small>
-            <p class="text-3xl font-semibold">16,928</p>
-        </x-widget>
+        <x-widget title="Totaal Evenementen Geselecteerd" bottomText="">
+            @if($aantalEvenementen > 0)
+                <p class="text-3xl font-semibold">{{ $aantalEvenementen }}</p>
+            @else
+                <p class="text-3xl font-semibold">Geen gegevens geselecteerd</p>
+            @endif
+        </x-widget><!--
         <x-widget title="Totaal Ligplaatsen Maand" bottomText="+33% meer dan Februari" small>
             <p class="text-3xl font-semibold">4,405</p>
         </x-widget>
         <x-widget title="Hoi" small>
             <p>Dit is de inhoud van een widget, neem ik aan.</p>
-        </x-widget>
+        </x-widget>-->
 
         <!-- Nieuwe Dropdown Widget -->
-        <x-widget title="Groeperen op tijd" small>
-            <form method="POST" action="{{ route('chart.groupByTime') }}">
+        <x-widget title="Groeperen op tijd">
+            <form method="get" action="{{ route('chart.groupByTime') }}?{{ request()->getQueryString() }}" id="groepeer">
                 @csrf
                 <label for="timeGrouping" class="block mb-2 font-semibold">Opties:</label>
                 <select id="timeGrouping" name="timeGrouping" class="border-gray-300 rounded p-2 w-full">
@@ -51,10 +57,32 @@ catch (Exception $e) {
                     Toepassen
                 </button>
             </form>
+            <script>
+                const form = document.getElementById("groepeer");
+
+                let url = form.action;
+
+                let index = url.indexOf("?");
+                let params = url.slice(index);
+                url = new URLSearchParams(params);
+                for (const param of url.keys()){
+                    let paramValue = url.get(param);
+                    let hidden = document.createElement("INPUT");
+                    hidden.type = "hidden";
+                    hidden.name = param;
+                    hidden.value = paramValue;
+                    form.appendChild(hidden);
+                }
+            </script>
         </x-widget>
     </div>
 
     <x-widget title="Testgrafiek met Graph.js">
+        <x-slot name="menuItems">
+            <li id="exportChartPNG" tabindex="0">Exporteer naar png</li>
+            <li id="exportChartJPG" tabindex="0">Exporteer naar jpg</li>
+            <li id="exportChartPDF" tabindex="0">Exporteer naar pdf</li>
+        </x-slot>
         <div>
             <canvas id="myChart"></canvas>
         </div>

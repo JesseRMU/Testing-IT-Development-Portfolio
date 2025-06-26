@@ -37,12 +37,15 @@
                 <x-filter table="evenementen" name="schip_avv_klasse" type="checkbox" />
                 <x-filter table="evenementen" name="schip_containers" type="checkbox" />
                 <x-filter table="evenementen" name="schip_containers_type" type="checkbox" />
-                <x-filter table="evenementen" name="schip_containers_teus" type="checkbox" />
+                <x-filter table="evenementen" name="schip_containers_teus" type="number" />
             </div>
         </x-widget>
 
         {{--Datum filter--}}
         <x-widget title="Filteren op datum" class="w-[280px]">
+            <x-slot name="menuItems">
+                <li tabindex="0" onclick="clearDates();">Clear</li>
+            </x-slot>
             <input type="text" id="startDate" name="startDate" value="{{ request('startDate') }}" placeholder="Startdatum" class="border border-black rounded px-2 py-1 w-full mb-2">
             <input type="text" id="endDate" name="endDate" value="{{ request('endDate') }}" placeholder="Einddatum" class="border border-black rounded px-2 py-1 w-full">
         </x-widget>

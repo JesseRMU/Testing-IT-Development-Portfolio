@@ -268,6 +268,32 @@ class EvenementController extends Controller
     }
 
     /**
+     * Haal alle evenementen op zonder paginatie.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllEvenements()
+    {
+        try {
+            // Haal alle evenementen met de relaties wachthaven en steiger
+            $evenementen = Evenement::with(['wachthaven', 'steiger'])
+                ->select(["*", DB::raw("timediff(evenement_eind_datum, evenement_begin_datum) AS duur")])
+                ->get();
+
+            // Retourneer de evenementen als JSON-respons
+            return response()->json([
+                'status' => 'success',
+                'data' => $evenementen,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Filter tussen begin en eind datum
      *
      * @param $query

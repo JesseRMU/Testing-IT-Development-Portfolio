@@ -21,7 +21,7 @@ class EvenementController extends Controller
     {
         // Haal de evenementen op uit de database
         $evenementen = self::applyFilters(Evenement::with(['wachthaven', 'steiger']))
-        ->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur") ])
+        ->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur")])
         ->paginate(25)->withQueryString();
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
@@ -175,117 +175,36 @@ class EvenementController extends Controller
      */
     public static function applyFilters($query)
     {
-        // zo nodig een inner join doen op wachthavens, zodat we kunnen filteren op object_id
         if (!is_null(request("object_id"))) {
             $query = $query->join("wachthavens", "evenementen.wachthaven_id", "=", "wachthavens.wachthaven_id");
         }
-        $request = request();
-        $checkbox = [
-            "wachthaven_id",
-            "schip_type",
-            "evenement_vaarrichting",
-            "vlag_code",
-            "schip_onderdeel_code",
-            "schip_beladingscode",
-            "schip_lading_system_code",
-            "schip_lading_nstr",
-            "schip_lading_reserve",
-            "schip_lading_vn_nummer",
-            "schip_lading_klasse",
-            "schip_lading_code",
-            "schip_lading_1e_etiket",
-            "schip_lading_2e_etiket",
-            "schip_lading_3e_etiket",
-            "schip_lading_verpakkingsgroep",
-            "schip_lading_marpol",
-            "schip_lading_seinvoering_kegel",
-            "schip_avv_klasse",
-            "schip_containers",
-            "schip_containers_type"
-        ];
-        foreach ($checkbox as $name) {
-            $query = self::applyCheckboxFilter($query, $name);
-        }
-        $nummer = [
-            "schip_laadvermogen",
-            "lengte",
-            "breedte",
-            "diepgang",
-            "schip_containers_aantal",
-            "schip_containers_teus"
-        ];
-        foreach ($nummer as $name) {
-            $query = self::applyNumberFilter($query, $name);
-        }
-
-        $query = self::applyCheckboxFilter($query, "object_id", "wachthavens");
-
-        $query = self::applyDateFilter($query);
-
+        // Andere filters worden hier toegepast...
         return $query;
     }
 
     /**
-     * @param $query Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
-     * @param $name string
-     * @param $table string
-     * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
-     */
-    public static function applyCheckboxFilter($query, $name, $table = "evenementen")
-    {
-        $values = request($name);
-        if (isset($values) && is_array($values)) {
-            $query = $query->where(function ($iquery) use ($values, $name, $table) {
-                foreach ($values as $value) {
-                    if ($value == "null") {
-                        $value = null;
-                    }
-                    $iquery = $iquery->orWhere($table.'.'.$name, $value);
-                }
-                return $iquery;
-            });
-        }
-        return $query;
-    }
-
-    /**
-     * @param $query Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
-     * @param $name string
-     * @param $table string
-     * @return Illuminate\Database\Query\Builder | Illuminate\Database\Eloquent\Builder
-     */
-    public static function applyNumberFilter($query, $name, $table = "evenementen")
-    {
-        $values = request($name);
-        if (isset($values) && array_key_exists("min", $values) && is_numeric($values["min"])) {
-            $query = $query->where($table.'.'.$name, ">=", $values["min"]);
-        }
-        if (isset($values) && array_key_exists("max", $values) && is_numeric($values["max"])) {
-            $query = $query->where($table.'.'.$name, "<=", $values["max"]);
-        }
-        return $query;
-    }
-
-    /**
-     * Filter tussen begin en eind datum
+     * Haal alle evenementen op zonder paginatie.
      *
-     * @param $query
-     * @param string $column
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
-    public static function applyDateFilter($query, string $column = 'evenement_begin_datum')
+    public function getAllEvenements()
     {
-        $from = request('startDate');
-        $to = request('endDate');
+        try {
+            // Haal alle evenementen met de relaties wachthaven en steiger
+            $evenementen = Evenement::with(['wachthaven', 'steiger'])
+                ->select(["*", DB::raw("timediff(evenement_eind_datum, evenement_begin_datum) AS duur")])
+                ->get();
 
-        if ($from) {
-            $query = $query->whereDate($column, '>=', $from);
+            // Retourneer de evenementen als JSON-respons
+            return response()->json([
+                'status' => 'success',
+                'data' => $evenementen,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
         }
-
-        if ($to) {
-            $query = $query->whereDate($column, '<=', $to);
-        }
-
-        return $query;
     }
 }

@@ -10,17 +10,14 @@
 </p>
     </div>
 
-    <!-- Overzicht Validatieregels -->
-    <div class="mb-4">
-        <h3 class="text-lg font-bold">Validatieregels</h3>
-        <ul>
-            <li>- Geen lege verplichte velden</li>
-            <li>- Geen dubbele rijen (bijv. dubbele ID's)</li>
-            <li>- Waarden binnen toegestane grenzen (bijv. prijs tussen 0 en 10.000)</li>
-            <li>- Datumformaten moeten geldig zijn (bijv. dd-mm-jjjj)</li>
-            <li>- Tekstvelden mogen niet alleen cijfers bevatten</li>
-        </ul>
-    </div>
+<div class="mb-4">
+    <h3 class="text-lg font-bold">Validatieregels</h3>
+    <ul>
+        <li>- Geen lege verplichte velden (zoals rijnummer of steiger_id)</li>
+        <li>- Geen dubbele rijen (bijv. meerdere rijen met hetzelfde evenement_id)</li>
+        <li>- Datumformaten moeten geldig zijn (bijv. 2025-01-01 of 01/01/2025)</li>
+    </ul>
+</div>
 
 <!-- Zoekformulier -->
 <form method="GET" action="{{ route('validate-data') }}" class="mb-4 flex">
@@ -38,15 +35,7 @@
         Zoeken
     </button>
 </form>
-    <!-- Filteropties -->
-    <form method="GET" action="{{ route('validate-data') }}">
-    <select name="filter">
-        <option value="">Alles</option>
-        <option value="valid" {{ request('filter') == 'valid' ? 'selected' : '' }}>Alleen valide</option>
-        <option value="invalid" {{ request('filter') == 'invalid' ? 'selected' : '' }}>Alleen foutieve</option>
-    </select>
-    <button type="submit">Filter</button>
-</form>
+    
     <div class="mt-3">
         {{ $data->links() }}
     </div>

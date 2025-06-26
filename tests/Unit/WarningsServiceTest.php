@@ -2,16 +2,22 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Services\WaarschuwingService;
 
 class WarningsServiceTest extends TestCase
 {
+
+    use RefreshDatabase;
+
     /** @test */
     // Test om te controleren of waarschuwingen worden weergegeven wanneer er
     // meer evenementen zijn dan steigers - met dummy data
     public function toon_waarschuwingen_wanneer_meer_evenementen_dan_steigers_unit()
     {
+        $this->actingAs(User::factory()->create());
         // Maak evenementen aan
         $evenementen = collect([
             ['wachthaven_id' => 1, 'evenement_begin_datum' => '2025-06-10'],

@@ -26,16 +26,36 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/heatmap', [HeatmapController::class, 'index'])->name("heatmap");
 
     // Route voor het herschikken van grafiekdata
-    Route::delete('/evenementen/{id}', [EvenementController::class, 'destroy'])->name('evenementen.destroy');
+    Route::delete(
+        '/evenementen/{id}',
+        [EvenementController::class, 'destroy']
+    )->name('evenementen.destroy');
 
-    Route::get('/chart/groupByTime', [EvenementController::class, 'groupByTime'])->name('chart.groupByTime');
+    Route::get(
+        '/chart/groupByTime',
+        [EvenementController::class, 'groupByTime']
+    )->name('chart.groupByTime');
 
-    Route::get('/validate-data', [DataValidationController::class, 'validateData'])->name('validate-data');
-    Route::delete('/validate-data/remove-invalid', [DataValidationController::class, 'removeInvalidData'])->name('validate-data.remove-invalid');
-    Route::delete('/validate-data/remove-row/{rowIndex}', [DataValidationController::class, 'removeRow'])->name('validate-data.remove-row');
+    Route::get(
+        '/validate-data',
+        [DataValidationController::class, 'validateData']
+    )->name('validate-data');
+
+    Route::delete(
+        '/validate-data/remove-invalid',
+        [DataValidationController::class, 'removeInvalidData']
+    )->name('validate-data.remove-invalid');
+
+    Route::delete(
+        '/validate-data/remove-row/{rowIndex}',
+        [DataValidationController::class, 'removeRow']
+    )->name('validate-data.remove-row');
 
     // Route om alle evenementen als JSON op te halen
-    Route::get('/evenementen/all', [EvenementController::class, 'getAllEvenements'])->name('evenementen.all');
+    Route::get(
+        '/evenementen/all',
+        [EvenementController::class, 'getAllEvenements']
+    )->name('evenementen.all');
 
     Route::get('/check-database', function () {
         return DB::connection()->getDatabaseName();
@@ -46,7 +66,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::post("/upload_data", [ExcelUpload::class, "upload"])->name("upload_data");
-    Route::resource("evenementen", "App\Http\Controllers\EvenementController")->only(["index"]);
+
+    Route::resource("evenementen", EvenementController::class)->only(["index"]);
 });
 
 // Login functie
@@ -59,4 +80,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.su
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route voor het ophalen van de datums die geactiveerd moeten worden
-Route::get('/api/evenementen/dates', [EvenementController::class, 'getAvailableDates']);
+Route::get(
+    '/api/evenementen/dates',
+    [EvenementController::class, 'getAvailableDates']
+);

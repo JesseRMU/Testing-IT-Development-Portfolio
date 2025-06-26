@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use App\Models\Wachthaven;
 use App\Models\Steiger;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -256,8 +257,6 @@ class EvenementController extends Controller
      * @param string $column
      * @return mixed
      */
-
-
     public static function applyDateFilter($query, string $column = 'evenement_begin_datum')
     {
         $from = request('startDate');
@@ -279,11 +278,33 @@ class EvenementController extends Controller
             $query = $query->whereDate($column, '<=', $to);
         }
 
-        if ($weekday = request('weekday')) {
-            $query = $query->whereRaw("WEEKDAY($column) = ?", [$weekday]);
+        if (($weekday = request('weekday')) !== null) {
+            $mysqlWeekday = ($weekday + 6) % 7;
+            $query = $query->whereRaw("WEEKDAY(evenement_begin_datum) = ?", [$mysqlWeekday]);
         }
+
+
 
         return $query;
     }
+
+    /**
+     * Haalt een lijst op van alle beschikbare datums waarop evenementen plaatsvinden
+     *
+     * @param Request $request HTTP-request met (mogelijk) filters
+     * @return JsonResponse Een JSON-array met alle beschikbare datums
+     */
+    public function getAvailableDates(Request $request)
+    {
+        $query = self::applyFilters(Evenement::query());
+
+        $dates = $query->selectRaw('DATE(evenement_begin_datum) as date')
+            ->distinct()
+            ->pluck('date');
+
+        // Return als JSON
+        return response()->json($dates);
+    }
+
 
 }

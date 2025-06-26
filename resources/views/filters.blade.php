@@ -46,10 +46,14 @@
             <input type="text" id="startDate" name="startDate" value="{{ request('startDate') }}" placeholder="Startdatum" class="border border-black rounded px-2 py-1 w-full mb-2">
             <input type="text" id="endDate" name="endDate" value="{{ request('endDate') }}" placeholder="Einddatum" class="border border-black rounded px-2 py-1 w-full">
         </x-widget>
+
+        {{--tijdsfilter--}}
         <x-widget title="Filteren op tijd" class="w-[280px]">
             <input type="text" id="startTime" name="startTime" value="{{ request('startTime') }}" placeholder="Starttijd" class="border border-black rounded px-2 py-1 w-full mb-2">
             <input type="text" id="endTime" name="endTime" value="{{ request('endTime') }}" placeholder="Eindtijd" class="border border-black rounded px-2 py-1 w-full">
         </x-widget>
+
+        {{--dag van de week filter--}}
         <x-widget title="Filter op dag" class="w-[280px]">
             <select name="weekday" class="border border-black rounded px-2 py-1 w-full">
                 <option value="">-- Kies een dag --</option>
@@ -67,7 +71,17 @@
     <script type="application/javascript">
         const links = [... document.getElementById("links").querySelectorAll("a")];
         const filters = document.getElementById("filters");
-        filters.addEventListener("input", () => {
+        filters.addEventListener("input", handleFilters);
+
+        function clearDates(){
+            fp.clear();
+            //soms is fp.clear sloom en, ook als we o op true zetten, wordt soms de event verstuurd voordat de fp daadwerkelijk gecleard is
+            filters.querySelector("[name='startDate']").value = "";
+            filters.querySelector("[name='endDate']").value = "";
+            handleFilters();
+        }
+
+        function handleFilters () {
             if(filters.reportValidity()){
                 const formData = new FormData(filters);
                 const params = new URLSearchParams(formData);
@@ -80,6 +94,6 @@
                     link.href = url.href;
                 }
             }
-        });
+        }
     </script>
 </x-main>

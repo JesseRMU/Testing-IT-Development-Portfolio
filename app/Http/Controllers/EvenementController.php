@@ -23,7 +23,7 @@ class EvenementController extends Controller
     {
         // Haal de evenementen op uit de database
         $evenementen = self::applyFilters(Evenement::with(['wachthaven', 'steiger']))
-        ->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur") ])
+        ->select(["*", DB::raw("timediff(evenement_eind_datum,evenement_begin_datum) AS duur")])
         ->paginate(25)->withQueryString();
         // Stuur data naar de view
         return view('evenement.index', compact('evenementen'));
@@ -177,7 +177,6 @@ class EvenementController extends Controller
      */
     public static function applyFilters($query)
     {
-        // zo nodig een inner join doen op wachthavens, zodat we kunnen filteren op object_id
         if (!is_null(request("object_id"))) {
             $query = $query->join("wachthavens", "evenementen.wachthaven_id", "=", "wachthavens.wachthaven_id");
         }

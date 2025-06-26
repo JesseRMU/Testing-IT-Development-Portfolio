@@ -47,6 +47,19 @@
                     </td>
                 </tr>
             @endforeach
+            <tr>
+                <td>999999</td> <!-- Niet-bestaande ID -->
+                <td colspan="10">Foutieve data om testen te forceren</td>
+                <td>
+                    <form action="{{ route('evenementen.destroy', 999999) }}" method="POST" onsubmit="return confirm('Weet u zeker dat u deze data wilt verwijderen?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            Verwijderen
+                        </button>
+                    </form>
+                </td>
+            </tr>
         </table>
         {{ $evenementen->links() }}
     @endif

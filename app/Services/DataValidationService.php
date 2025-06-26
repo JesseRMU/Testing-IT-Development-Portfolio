@@ -75,10 +75,8 @@ class DataValidationService
                 if ($row['date_field'] === 'Ongeldige datum') {
                     $errors[] = 'Ongeldige datum opgegeven in het "date_field"-veld.';
                     \Log::error("Ongeldige datum gevonden in rij $index. Waarde: Ongeldige datum");
-                } elseif (
-                    \DateTime::createFromFormat('d-m-Y', $row['date_field']) === false &&
-                    \DateTime::createFromFormat('Y-m-d', $row['date_field']) === false
-                ) {
+                } elseif (\DateTime::createFromFormat('d-m-Y', $row['date_field']) === false &&
+                    \DateTime::createFromFormat('Y-m-d', $row['date_field']) === false) {
                     $errors[] = 'De datum moet een geldig formaat hebben (DD-MM-YYYY of YYYY-MM-DD).';
                     \Log::error("Ongeldig datumformaat in rij $index. Waarde: " . ($row['date_field'] ?? 'leeg'));
                 }

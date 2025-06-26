@@ -35,7 +35,7 @@
         Zoeken
     </button>
 </form>
-    
+
     <div class="mt-3">
         {{ $data->links() }}
     </div>

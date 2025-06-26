@@ -8,6 +8,7 @@ class DataValidationService
 {
     /**
      * Valideer een enkele rij in de dataset.
+     *
      * @param array $row
      * @return array
      */
@@ -49,12 +50,14 @@ class DataValidationService
             'beladingscode.between' => 'De beladingscode moet tussen 1 en 9 liggen.',
         ];
 
-        $validator = \Validator::make($row, $rules, $messages);
+        $validator = Validator::make($row, $rules, $messages);
+
         return $validator->fails() ? $validator->errors()->all() : [];
     }
 
     /**
      * Valideer een volledige dataset en retourneer invalidaties.
+     *
      * @param array $dataset
      * @return array
      */
@@ -74,37 +77,41 @@ class DataValidationService
                 }
 
                 // Controleer op ongeldige waarde door user-defined standaardwaarde
-     if (empty($row['date_field'])) {
-         \Log::warning("Geen datum gevonden in rij $index. Gebruik standaardwaarde.");
-         $row['date_field'] = '01-01-2000';
-     }
-     $validFormats = ['d-m-Y', 'Y-m-d', 'd/m/Y']; // Voeg extra formaten toe als nodig
-if ($row['date_field'] === 'Ongeldige datum') {
-    $errors[] = 'Ongeldige datum opgegeven in het "date_field"-veld. Controleer de invoer.';
-    \Log::error("Ongeldige datum gevonden in rij $index. Waarde: Ongeldige datum");
-} elseif (empty($row['date_field']) ||
-    (\DateTime::createFromFormat('d-m-Y', $row['date_field']) === false &&
-     \DateTime::createFromFormat('Y-m-d', $row['date_field']) === false)) {
-    $errors[] = 'De datum moet een geldig formaat hebben (DD-MM-YYYY of YYYY-MM-DD).';
-    \Log::error("Invalid date format in rij $index. Waarde: " . ($row['date_field'] ?? 'leeg'));
-}
+                if (empty($row['date_field'])) {
+                    \Log::warning("Geen datum gevonden in rij $index. Gebruik standaardwaarde.");
+                    $row['date_field'] = '01-01-2000';
+                }
 
-  if (empty($row['steiger_id']) || empty($row['wachthaven_id'])) {
-      $errors[] = 'Wachthaven en steiger mogen niet leeg zijn.';
-  }
+                $validFormats = ['d-m-Y', 'Y-m-d', 'd/m/Y']; // Voeg extra formaten toe als nodig
+                if ($row['date_field'] === 'Ongeldige datum') {
+                    $errors[] = 'Ongeldige datum opgegeven in het "date_field"-veld. Controleer de invoer.';
+                    \Log::error("Ongeldige datum gevonden in rij $index. Waarde: Ongeldige datum");
+                } elseif (
+                   \DateTime::createFromFormat('d-m-Y', $row['date_field']) === false &&
+                   \DateTime::createFromFormat('Y-m-d', $row['date_field']) === false
+                ) {
+                    $errors[] = 'De datum moet een geldig formaat hebben (DD-MM-YYYY of YYYY-MM-DD).';
+                    \Log::error("Ongeldig datumformaat in rij $index. Waarde: " . ($row['date_field'] ?? 'leeg'));
+                }
 
-  if (isset($row['duur']) && ($row['duur'] < 0 || $row['duur'] > 14400)) {
-      $errors[] = 'Duur van het evenement mag niet negatief zijn of langer dan 10 dagen.';
-  }
+                if (empty($row['steiger_id']) || empty($row['wachthaven_id'])) {
+                    $errors[] = 'Wachthaven en steiger mogen niet leeg zijn.';
+                }
 
-    if (isset($row['lengte']) && ($row['lengte'] < 5 || $row['lengte'] > 400)) {
-        $errors[] = 'De lengte van het schip moet tussen 5 en 400 meter liggen.';
-    }
+                if (isset($row['duur']) && ($row['duur'] < 0 || $row['duur'] > 14400)) {
+                    $errors[] = 'Duur van het evenement mag niet negatief zijn of langer dan 10 dagen.';
+                }
+
+                if (isset($row['lengte']) && ($row['lengte'] < 5 || $row['lengte'] > 400)) {
+                    $errors[] = 'De lengte van het schip moet tussen 5 en 400 meter liggen.';
+                }
+
                 // Voeg gevonden fouten toe aan de lijst met invalidRows
                 if (!empty($errors)) {
                     $invalidRows[$index] = $errors;
                 }
             }
+
         } catch (\Exception $e) {
             \Log::error("Fout in validatie: " . $e->getMessage());
         }

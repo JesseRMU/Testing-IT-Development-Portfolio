@@ -1,5 +1,5 @@
 <x-main>
-    <form id="filters" method="GET" action="{{ route('evenementen.index') }}" class="flex gap-6 items-start max-w-full">
+    <form id="filters" method="GET"  class="flex gap-6 items-start max-w-full">
 
         <x-widget title="Filteren op veld" class="w-[400px] overflow-visible">
             <div>
@@ -48,6 +48,26 @@
             </x-slot>
             <input type="text" id="startDate" name="startDate" value="{{ request('startDate') }}" placeholder="Startdatum" class="border border-black rounded px-2 py-1 w-full mb-2">
             <input type="text" id="endDate" name="endDate" value="{{ request('endDate') }}" placeholder="Einddatum" class="border border-black rounded px-2 py-1 w-full">
+        </x-widget>
+
+        {{--tijdsfilter--}}
+        <x-widget title="Filteren op tijd" class="w-[280px]">
+            <input type="text" id="startTime" name="startTime" value="{{ request('startTime') }}" placeholder="Starttijd" class="border border-black rounded px-2 py-1 w-full mb-2">
+            <input type="text" id="endTime" name="endTime" value="{{ request('endTime') }}" placeholder="Eindtijd" class="border border-black rounded px-2 py-1 w-full">
+        </x-widget>
+
+        {{--dag van de week filter--}}
+        <x-widget title="Filter op dag" class="w-[280px]">
+            <select name="weekday" class="border border-black rounded px-2 py-1 w-full">
+                <option value="">-- Kies een dag --</option>
+                <option value="0" {{ request('weekday') === '0' ? 'selected' : '' }}>Maandag</option>
+                <option value="1" {{ request('weekday') === '1' ? 'selected' : '' }}>Dinsdag</option>
+                <option value="2" {{ request('weekday') === '2' ? 'selected' : '' }}>Woensdag</option>
+                <option value="3" {{ request('weekday') === '3' ? 'selected' : '' }}>Donderdag</option>
+                <option value="4" {{ request('weekday') === '4' ? 'selected' : '' }}>Vrijdag</option>
+                <option value="5" {{ request('weekday') === '5' ? 'selected' : '' }}>Zaterdag</option>
+                <option value="6" {{ request('weekday') === '6' ? 'selected' : '' }}>Zondag</option>
+            </select>
         </x-widget>
     </form>
 

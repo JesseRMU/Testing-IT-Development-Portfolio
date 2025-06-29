@@ -34,8 +34,8 @@
                     <td>{{ $evenement->lengte }}</td>
                     <td>{{ $evenement->breedte }}</td>
                     <td>{{ $evenement->diepgang }}</td>
-                    <td>{{ $evenement->wachthaven->wachthaven_naam }}</td>
-                    <td>{{ $evenement->steiger->steiger_code }}</td>
+                    <td>{{ $evenement->wachthaven->wachthaven_naam ?? 'N/A' }}</td>
+                    <td>{{ $evenement->steiger->steiger_code ?? 'N/A' }}</td>
                     <td>
                         <form action="{{ route('evenementen.destroy', $evenement->evenement_id) }}" method="POST" onsubmit="return confirm('Weet u zeker dat u deze data wilt verwijderen?')">
                             @csrf

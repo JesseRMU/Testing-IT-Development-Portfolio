@@ -14,8 +14,31 @@ class SteigerFactory extends Factory
     {
         return [
             'wachthaven_id' => Wachthaven::factory(),
-            'steiger_naam' => $this->faker->word . ' Steiger',
-            'steiger_code' => $this->faker->unique()->numberBetween(1, 100),
+            'steiger_code' => 'ST-' . $this->faker->unique()->numberBetween(1000, 9999),
+            'latitude' => $this->faker->latitude(51.0, 53.0), // Nederland coordinaten
+            'longitude' => $this->faker->longitude(3.0, 7.0),
         ];
+    }
+
+    // Steiger met geldige coördinaten
+    public function withValidCoordinates(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'latitude' => $this->faker->latitude(51.0, 53.0),
+                'longitude' => $this->faker->longitude(3.0, 7.0),
+            ];
+        });
+    }
+
+    // Steiger zonder coördinaten
+    public function withoutCoordinates(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'latitude' => null,
+                'longitude' => null,
+            ];
+        });
     }
 }

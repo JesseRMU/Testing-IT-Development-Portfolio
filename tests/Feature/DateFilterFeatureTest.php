@@ -74,7 +74,7 @@ class DateFilterFeatureTest extends TestCase
         $this->assertEquals(0, $evenementen->count(), 'Moet 0 events tonen als er geen data is');
     }
 
-    // Test: Exception path - verkeerde datum volgorde
+    //  Exception path - verkeerde datum volgorde
     public function test_datum_filter_exception_path(): void
     {
         // Setup testdata

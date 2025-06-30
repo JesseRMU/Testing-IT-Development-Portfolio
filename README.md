@@ -20,8 +20,23 @@ Function Design ←→ Integration Tests (als dit nodig is)
 Code Implementation ←→ Unit Tests (test losse functies)
 ```
 
-Voor mijn twee user stories betekent dit dat ik system tests maak die de hele route volgens de acceptance criteria testen, en unit tests voor de individuele functies.
+Voor mijn twee user stories betekent dit dat ik system tests maak die de hele route volgens de acceptance criteria testen, en unit tests voor de individuele functies. 
 
+**Alle tests volgen het AAA principe:**
+
+```php
+public function test_datum_filter_happy_path(): void
+{
+    // Arrange - testdata maken
+    $wachthaven = Wachthaven::factory()->create();
+    
+    // Act - de test uitvoeren  
+    $response = $this->get('/evenementen?startDate=2024-03-01');
+    
+    // Assert - checken of het klopt
+    $this->assertEquals(3, $evenementen->count());
+}
+```
 ### 3. User Stories
 
 #### User Story 2: Filteren op Datumbereik
